@@ -1,4 +1,5 @@
 dependencies: /Users/mjchao/Desktop/Sudoku-Solver/Sudoku-Solver/main.cpp \
+  /Users/mjchao/Desktop/Sudoku-Solver/Sudoku-Solver/GridExtractor.h \
   /usr/local/include/opencv2/opencv.hpp \
   /usr/local/include/opencv2/core.hpp \
   /usr/local/include/opencv2/core/cvdef.h \

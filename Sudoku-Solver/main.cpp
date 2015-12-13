@@ -11,23 +11,31 @@ using std::cin;
 using std::cout;
 using std::endl;
 
+#include <vector>
+using std::vector;
+
 #include <string>
 using std::string;
+
+#include "GridExtractor.h"
 
 #include "opencv2/opencv.hpp"
 using namespace cv;
 
+
 int main(int argc, const char * argv[]) {
     
-    Mat image;
+    Mat puzzle;
     
-    string imageFilename;
-    cin >> imageFilename;
-    image = imread( imageFilename.c_str() , 1 );
+    //Path    /Users/mjchao/Desktop/Sudoku-Solver/puzzle.jpg
+    string imageFilename = "/Users/mjchao/Desktop/Sudoku-Solver/puzzle.jpg";
+    //cin >> imageFilename;
+    puzzle = imread( imageFilename.c_str() , 0 );
     
-    namedWindow( "Display Image" , WINDOW_AUTOSIZE );
-    imshow( "Display Image" , image );
-    waitKey( 0 );
+    GridExtractor gridExtractor( puzzle );
+    
+    vector< Vec2f > gridLines;
+    gridExtractor.extractGrid( gridLines );
     
     return 0;
 }

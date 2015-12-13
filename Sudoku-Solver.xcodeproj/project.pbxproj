@@ -125,6 +125,8 @@
 		BAF96FAE1C1CD243005FA0CF /* libopencv_videostab.3.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libopencv_videostab.3.0.0.dylib; sourceTree = "<group>"; };
 		BAF96FAF1C1CD243005FA0CF /* libopencv_videostab.3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libopencv_videostab.3.0.dylib; sourceTree = "<group>"; };
 		BAF96FB01C1CD243005FA0CF /* libopencv_videostab.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libopencv_videostab.dylib; sourceTree = "<group>"; };
+		BAF970051C1CE0CC005FA0CF /* puzzle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = puzzle.jpg; sourceTree = "<group>"; };
+		BAF970061C1CF0FD005FA0CF /* GridExtractor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GridExtractor.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -191,6 +193,7 @@
 		BAF96F001C1CCE7D005FA0CF = {
 			isa = PBXGroup;
 			children = (
+				BAF970051C1CE0CC005FA0CF /* puzzle.jpg */,
 				BAF96F7E1C1CD243005FA0CF /* lib */,
 				BAF96F0B1C1CCE7E005FA0CF /* Sudoku-Solver */,
 				BAF96F0A1C1CCE7E005FA0CF /* Products */,
@@ -209,6 +212,7 @@
 			isa = PBXGroup;
 			children = (
 				BAF96F0C1C1CCE7E005FA0CF /* main.cpp */,
+				BAF970061C1CF0FD005FA0CF /* GridExtractor.h */,
 			);
 			path = "Sudoku-Solver";
 			sourceTree = "<group>";
