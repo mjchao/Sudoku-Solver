@@ -73,6 +73,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		BA40FBD91C2DC2D400474451 /* puzzle2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = puzzle2.jpg; sourceTree = "<group>"; };
+		BA40FBDA1C2DC2D400474451 /* puzzle3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = puzzle3.png; sourceTree = "<group>"; };
+		BA40FBDB1C2DC75A00474451 /* Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
 		BAF96F091C1CCE7E005FA0CF /* Sudoku-Solver */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Sudoku-Solver"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BAF96F0C1C1CCE7E005FA0CF /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		BAF96F7F1C1CD243005FA0CF /* libopencv_calib3d.3.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libopencv_calib3d.3.0.0.dylib; sourceTree = "<group>"; };
@@ -126,7 +129,7 @@
 		BAF96FAF1C1CD243005FA0CF /* libopencv_videostab.3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libopencv_videostab.3.0.dylib; sourceTree = "<group>"; };
 		BAF96FB01C1CD243005FA0CF /* libopencv_videostab.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libopencv_videostab.dylib; sourceTree = "<group>"; };
 		BAF970051C1CE0CC005FA0CF /* puzzle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = puzzle.jpg; sourceTree = "<group>"; };
-		BAF970061C1CF0FD005FA0CF /* GridExtractor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GridExtractor.h; sourceTree = "<group>"; };
+		BAF970061C1CF0FD005FA0CF /* PuzzleExtractor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PuzzleExtractor.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -193,6 +196,8 @@
 		BAF96F001C1CCE7D005FA0CF = {
 			isa = PBXGroup;
 			children = (
+				BA40FBD91C2DC2D400474451 /* puzzle2.jpg */,
+				BA40FBDA1C2DC2D400474451 /* puzzle3.png */,
 				BAF970051C1CE0CC005FA0CF /* puzzle.jpg */,
 				BAF96F7E1C1CD243005FA0CF /* lib */,
 				BAF96F0B1C1CCE7E005FA0CF /* Sudoku-Solver */,
@@ -212,7 +217,8 @@
 			isa = PBXGroup;
 			children = (
 				BAF96F0C1C1CCE7E005FA0CF /* main.cpp */,
-				BAF970061C1CF0FD005FA0CF /* GridExtractor.h */,
+				BAF970061C1CF0FD005FA0CF /* PuzzleExtractor.h */,
+				BA40FBDB1C2DC75A00474451 /* Utils.h */,
 			);
 			path = "Sudoku-Solver";
 			sourceTree = "<group>";
@@ -467,6 +473,7 @@
 				BAF96F121C1CCE7E005FA0CF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

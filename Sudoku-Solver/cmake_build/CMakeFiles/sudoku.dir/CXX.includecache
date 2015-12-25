@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/mjchao/Desktop/Sudoku-Solver/Sudoku-Solver/GridExtractor.h
+opencv2/opencv.hpp
+/Users/mjchao/Desktop/Sudoku-Solver/Sudoku-Solver/opencv2/opencv.hpp
+
+/Users/mjchao/Desktop/Sudoku-Solver/Sudoku-Solver/main.cpp
+iostream
+-
+vector
+-
+string
+-
+GridExtractor.h
+/Users/mjchao/Desktop/Sudoku-Solver/Sudoku-Solver/GridExtractor.h
+opencv2/opencv.hpp
+/Users/mjchao/Desktop/Sudoku-Solver/Sudoku-Solver/opencv2/opencv.hpp
+

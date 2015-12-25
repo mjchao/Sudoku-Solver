@@ -17,7 +17,7 @@ using std::vector;
 #include <string>
 using std::string;
 
-#include "GridExtractor.h"
+#include "PuzzleExtractor.h"
 
 #include "opencv2/opencv.hpp"
 using namespace cv;
@@ -31,11 +31,10 @@ int main(int argc, const char * argv[]) {
     string imageFilename = "/Users/mjchao/Desktop/Sudoku-Solver/puzzle.jpg";
     //cin >> imageFilename;
     puzzle = imread( imageFilename.c_str() , 0 );
+
+    PuzzleExtractor puzzleExtractor( puzzle );
+    puzzleExtractor.extractPuzzle();
     
-    GridExtractor gridExtractor( puzzle );
-    
-    vector< Vec2f > gridLines;
-    gridExtractor.extractGrid( gridLines );
     
     return 0;
 }
