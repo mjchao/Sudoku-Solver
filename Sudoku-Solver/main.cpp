@@ -21,6 +21,9 @@ using std::string;
 
 #include "DigitRecognizer.h"
 
+#include "opencv2/core/core.hpp"
+using cv::Mat;
+
 
 int main(int argc, const char * argv[]) {
     
@@ -36,12 +39,11 @@ int main(int argc, const char * argv[]) {
     puzzleExtractor.extractPuzzle();
     */
     
-    /*
     DigitRecognizer d;
     d.train( "/Users/mjchao/Desktop/Sudoku-Solver/digits/train-images.idx3-ubyte" ,
             "/Users/mjchao/Desktop/Sudoku-Solver/digits/train-labels.idx1-ubyte" );
     d.test( "/Users/mjchao/Desktop/Sudoku-Solver/digits/t10k-images.idx3-ubyte" ,
            "/Users/mjchao/Desktop/Sudoku-Solver/digits/t10k-labels.idx1-ubyte" );
-    */
+    
     return 0;
 }

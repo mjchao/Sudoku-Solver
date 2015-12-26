@@ -53,4 +53,6 @@ PuzzleExtractor.h
 /Users/mjchao/Desktop/Sudoku-Solver/Sudoku-Solver/PuzzleExtractor.h
 DigitRecognizer.h
 /Users/mjchao/Desktop/Sudoku-Solver/Sudoku-Solver/DigitRecognizer.h
+opencv2/core/core.hpp
+/Users/mjchao/Desktop/Sudoku-Solver/Sudoku-Solver/opencv2/core/core.hpp
 

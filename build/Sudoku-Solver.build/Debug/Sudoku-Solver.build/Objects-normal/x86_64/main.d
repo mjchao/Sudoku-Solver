@@ -52,4 +52,5 @@ dependencies: /Users/mjchao/Desktop/Sudoku-Solver/Sudoku-Solver/main.cpp \
   /usr/local/include/opencv2/core/affine.hpp \
   /usr/local/include/opencv2/calib3d/calib3d_c.h \
   /usr/local/include/opencv2/ml.hpp \
-  /Users/mjchao/Desktop/Sudoku-Solver/Sudoku-Solver/DigitRecognizer.h
+  /Users/mjchao/Desktop/Sudoku-Solver/Sudoku-Solver/DigitRecognizer.h \
+  /usr/local/include/opencv2/ml/ml.hpp

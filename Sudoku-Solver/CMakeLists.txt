@@ -1,4 +1,4 @@
-cmake_minimum_required( VERSION 2.8 )
+cmake_minimum_required( VERSION 3.0 )
 project( Sudoku-Solver )
 find_package( OpenCV REQUIRED )
 add_executable( sudoku main.cpp )

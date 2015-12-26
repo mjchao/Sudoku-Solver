@@ -29,6 +29,9 @@ using std::ostringstream;
 
 #include "opencv2/core/core.hpp"
 using cv::Mat;
+using cv::Scalar;
+
+#include "opencv2/ml/ml.hpp"
 
 /**
  * A neural network trained by the MNIST dataset to
@@ -39,10 +42,12 @@ class DigitRecognizer {
 private:
     
     vector<vector<unsigned char>> _trainingData;
-    vector<unsigned char> _trainingLabels;
+    vector<vector<unsigned char>> _trainingLabels;
     
     vector<vector<unsigned char>> _testData;
-    vector<unsigned char> _testLabels;
+    vector<vector<unsigned char>> _testLabels;
+    
+    cv::Ptr<cv::ml::ANN_MLP> _neuralNetwork;
     
     void readInt( ifstream& ifs , int& rtn ) {
         rtn = 0;
@@ -72,6 +77,13 @@ private:
                 buffer[ r*cols + c ] = dataBuffer;
             }
         }
+    }
+    
+    void readLabel( ifstream& ifs , vector<unsigned char>& buffer ) {
+        unsigned char dataBuffer;
+        readByte( ifs , dataBuffer );
+        buffer = vector<unsigned char>( 10 , 0 );
+        buffer[ static_cast<int>(dataBuffer) ] = 1;
     }
     
     /**
@@ -113,11 +125,9 @@ private:
         
         readInt( ifs , numImages );
         
-        unsigned char labelBuffer;
         _trainingLabels.resize( numImages );
         for ( int i=0 ; i<numImages ; ++i ) {
-            readByte( ifs , labelBuffer );
-            _trainingLabels[ i ] = labelBuffer;
+            readLabel( ifs , _trainingLabels[ i ] );
         }
     }
     
@@ -152,11 +162,9 @@ private:
         readInt( ifs , magicNumber );
         readInt( ifs , numImages );
         
-        unsigned char labelBuffer;
         _testLabels.resize( numImages );
         for ( int i=0 ; i<numImages ; ++i ) {
-            readByte( ifs , labelBuffer );
-            _testLabels[ i ] = labelBuffer;
+            readLabel( ifs , _testLabels[ i ] );
         }
     }
     
@@ -166,24 +174,70 @@ public:
         
     }
     
+    ~DigitRecognizer() {
+        _neuralNetwork.release();
+    }
+    
+    DigitRecognizer( const DigitRecognizer& other ) {
+        if ( !_neuralNetwork.empty() ) {
+            _neuralNetwork.release();
+        }
+        _neuralNetwork = other._neuralNetwork;
+    }
+    
+    DigitRecognizer& operator=( const DigitRecognizer& other ) {
+        if ( !_neuralNetwork.empty() ) {
+            _neuralNetwork.release();
+        }
+        _neuralNetwork = other._neuralNetwork;
+        return *this;
+    }
+    
     void train( const string& trainImageFile , const string& trainLabelFile ) {
         readTrainingData( trainImageFile , trainLabelFile );
+        
+        _neuralNetwork = cv::ml::ANN_MLP::create();
+        Mat layerSizes = Mat( 4 , 1 , CV_32SC1 );
+        layerSizes.row( 0 ) = Scalar( _trainingData[ 0 ].size() );
+        layerSizes.row( 1 ) = Scalar( 4 );
+        layerSizes.row( 2 ) = Scalar( 3 );
+        layerSizes.row( 3 ) = Scalar( 10 );
+        _neuralNetwork->setLayerSizes( layerSizes );
+        cout << "Training Data dimensions: " << _trainingData.size() << " " << _trainingData[ 0 ].size() << endl;
+        cout << "Training Label dimensions: " << _trainingLabels.size() << " " << _trainingLabels[ 0 ].size() << endl;
+        
+        Mat trainingData = Mat( _trainingData.size() , _trainingData[ 0 ].size() , CV_32F );
+        for ( int i=0 ; i<_trainingData.size() ; ++i ) {
+            for ( int j=0 ; j<_trainingData[ i ].size() ; ++j ) {
+                trainingData.at<float>(i , j) = _trainingData[ i ][ j ]/255.0;
+            }
+        }
+        
+        Mat trainingLabels = Mat( _trainingLabels.size() , _trainingLabels[ 0 ].size() , CV_32F );
+        for ( int i=0 ; i<_trainingLabels.size() ; ++i ) {
+            for ( int j=0 ; j<_trainingLabels[ i ].size() ; ++j ) {
+                trainingLabels.at<float>(i , j) = _trainingLabels[ i ][ j ];
+            }
+        }
+        _neuralNetwork->train( trainingData , cv::ml::ROW_SAMPLE , trainingLabels );
+        
+        
     }
     
     void test( const string& testImageFile , const string& testLabelFile ) {
         readTestData( testImageFile , testLabelFile );
         
-        Mat testImg( 28 , 28 , CV_8UC1 );
-        ImageDisplay disp;
-        for ( int i=0 ; i<25 ; ++i ) {
-            for ( int r=0 ; r<28 ; ++r ) {
-                for ( int c=0 ; c<28 ; ++c ) {
-                    testImg.at<unsigned char>( r , c ) = _testData[ i ][ r*28+c ];
-                }
+        Mat testData = Mat( 1 , _testData[ 0 ].size() , CV_32F );
+        for ( int i=0 ; i<1 ; ++i ) {
+            for ( int j=0 ; j<_testData[ i ].size() ; ++j ) {
+                testData.at<float>( i , j ) = _testData[ i ][ j ]/255.0;
             }
-            ostringstream title;
-            title << "This is a " << static_cast<int>(_testLabels[ i ]);
-            disp.showImage( title.str() , testImg );
+        }
+        
+        for ( int i=0 ; i<10 ; ++i ) {
+            Mat possibility = Mat::zeros( 1 , 10 , CV_32F );
+            possibility.at<float>(0 , i) = 1.0;
+            cout << "Prediction for " << i << ": " << _neuralNetwork->predict( testData ) << endl;
         }
     }
     
