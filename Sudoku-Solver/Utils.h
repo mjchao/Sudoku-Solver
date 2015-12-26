@@ -9,6 +9,9 @@
 #ifndef Sudoku_Solver_Utils_h
 #define Sudoku_Solver_Utils_h
 
+#include <string>
+using std::string;
+
 #include "opencv2/core/core.hpp"
 using cv::Mat;
 

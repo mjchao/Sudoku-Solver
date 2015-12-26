@@ -19,12 +19,15 @@ using std::string;
 
 #include "PuzzleExtractor.h"
 
+#include "DigitRecognizer.h"
+
 #include "opencv2/opencv.hpp"
 using namespace cv;
 
 
 int main(int argc, const char * argv[]) {
     
+    /*
     Mat puzzle;
     
     //Path    /Users/mjchao/Desktop/Sudoku-Solver/puzzle.jpg
@@ -34,7 +37,11 @@ int main(int argc, const char * argv[]) {
 
     PuzzleExtractor puzzleExtractor( puzzle );
     puzzleExtractor.extractPuzzle();
+    */
     
+    DigitRecognizer d;
+    d.train( "/Users/mjchao/Desktop/Sudoku-Solver/digits/train-images.idx3-ubyte" ,
+            "/Users/mjchao/Desktop/Sudoku-SOlver/digits/train-labels.idx1-ubyte" );
     
     return 0;
 }
