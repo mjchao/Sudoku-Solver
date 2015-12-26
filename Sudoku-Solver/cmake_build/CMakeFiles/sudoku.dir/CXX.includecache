@@ -6,9 +6,41 @@
 
 #IncludeRegexTransform: 
 
-/Users/mjchao/Desktop/Sudoku-Solver/Sudoku-Solver/GridExtractor.h
+/Users/mjchao/Desktop/Sudoku-Solver/Sudoku-Solver/DigitRecognizer.h
+iostream
+-
+fstream
+-
+vector
+-
+string
+-
+sstream
+-
+Utils.h
+/Users/mjchao/Desktop/Sudoku-Solver/Sudoku-Solver/Utils.h
+opencv2/core/core.hpp
+/Users/mjchao/Desktop/Sudoku-Solver/Sudoku-Solver/opencv2/core/core.hpp
+
+/Users/mjchao/Desktop/Sudoku-Solver/Sudoku-Solver/PuzzleExtractor.h
+iostream
+-
+algorithm
+-
+cmath
+-
+Utils.h
+/Users/mjchao/Desktop/Sudoku-Solver/Sudoku-Solver/Utils.h
 opencv2/opencv.hpp
 /Users/mjchao/Desktop/Sudoku-Solver/Sudoku-Solver/opencv2/opencv.hpp
+
+/Users/mjchao/Desktop/Sudoku-Solver/Sudoku-Solver/Utils.h
+string
+-
+opencv2/core/core.hpp
+/Users/mjchao/Desktop/Sudoku-Solver/Sudoku-Solver/opencv2/core/core.hpp
+opencv2/highgui/highgui.hpp
+/Users/mjchao/Desktop/Sudoku-Solver/Sudoku-Solver/opencv2/highgui/highgui.hpp
 
 /Users/mjchao/Desktop/Sudoku-Solver/Sudoku-Solver/main.cpp
 iostream
@@ -17,8 +49,8 @@ vector
 -
 string
 -
-GridExtractor.h
-/Users/mjchao/Desktop/Sudoku-Solver/Sudoku-Solver/GridExtractor.h
-opencv2/opencv.hpp
-/Users/mjchao/Desktop/Sudoku-Solver/Sudoku-Solver/opencv2/opencv.hpp
+PuzzleExtractor.h
+/Users/mjchao/Desktop/Sudoku-Solver/Sudoku-Solver/PuzzleExtractor.h
+DigitRecognizer.h
+/Users/mjchao/Desktop/Sudoku-Solver/Sudoku-Solver/DigitRecognizer.h
 
