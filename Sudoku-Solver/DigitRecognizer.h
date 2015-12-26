@@ -82,7 +82,7 @@ private:
     void readLabel( ifstream& ifs , vector<unsigned char>& buffer ) {
         unsigned char dataBuffer;
         readByte( ifs , dataBuffer );
-        buffer = vector<unsigned char>( 10 , 0 );
+        buffer.resize( 10 , 0 );
         buffer[ static_cast<int>(dataBuffer) ] = 1;
     }
     
@@ -174,8 +174,9 @@ public:
         
     }
     
+    /*
     ~DigitRecognizer() {
-        _neuralNetwork.release();
+        //_neuralNetwork.release();
     }
     
     DigitRecognizer( const DigitRecognizer& other ) {
@@ -191,18 +192,18 @@ public:
         }
         _neuralNetwork = other._neuralNetwork;
         return *this;
-    }
+    }*/
     
     void train( const string& trainImageFile , const string& trainLabelFile ) {
         readTrainingData( trainImageFile , trainLabelFile );
         
         _neuralNetwork = cv::ml::ANN_MLP::create();
-        Mat layerSizes = Mat( 4 , 1 , CV_32SC1 );
+        Mat layerSizes = Mat( 3 , 1 , CV_32SC1 );
         layerSizes.row( 0 ) = Scalar( _trainingData[ 0 ].size() );
-        layerSizes.row( 1 ) = Scalar( 4 );
-        layerSizes.row( 2 ) = Scalar( 3 );
-        layerSizes.row( 3 ) = Scalar( 10 );
+        layerSizes.row( 1 ) = Scalar( 25 );
+        layerSizes.row( 2 ) = Scalar( 10 );
         _neuralNetwork->setLayerSizes( layerSizes );
+        _neuralNetwork->setActivationFunction( cv::ml::ANN_MLP::SIGMOID_SYM );
         cout << "Training Data dimensions: " << _trainingData.size() << " " << _trainingData[ 0 ].size() << endl;
         cout << "Training Label dimensions: " << _trainingLabels.size() << " " << _trainingLabels[ 0 ].size() << endl;
         
@@ -216,29 +217,46 @@ public:
         Mat trainingLabels = Mat( _trainingLabels.size() , _trainingLabels[ 0 ].size() , CV_32F );
         for ( int i=0 ; i<_trainingLabels.size() ; ++i ) {
             for ( int j=0 ; j<_trainingLabels[ i ].size() ; ++j ) {
-                trainingLabels.at<float>(i , j) = _trainingLabels[ i ][ j ];
+                trainingLabels.at<float>(i , j) = _trainingLabels[ i ][ j ] * 1.0f;
             }
         }
-        _neuralNetwork->train( trainingData , cv::ml::ROW_SAMPLE , trainingLabels );
         
-        
+        if ( !_neuralNetwork->train( trainingData , cv::ml::ROW_SAMPLE , trainingLabels ) ) {
+            cout << "Training failed" << endl;
+            exit( 1 );
+        }
     }
     
     void test( const string& testImageFile , const string& testLabelFile ) {
         readTestData( testImageFile , testLabelFile );
         
-        Mat testData = Mat( 1 , _testData[ 0 ].size() , CV_32F );
-        for ( int i=0 ; i<1 ; ++i ) {
+        int correct = 0;
+        int total = 0;
+        for ( int i=0 ; i<_testData.size() ; ++i ) {
+            
+            Mat testData = Mat( 1 , _testData[ 0 ].size() , CV_32F );
             for ( int j=0 ; j<_testData[ i ].size() ; ++j ) {
-                testData.at<float>( i , j ) = _testData[ i ][ j ]/255.0;
+                testData.at<float>( 0 , j ) = _testData[ i ][ j ]/255.0;
+            }
+            
+            float prediction = _neuralNetwork->predict( testData );
+            cout << "Prediction for " << i << ": " << _neuralNetwork->predict( testData ) << endl;
+            
+            float actual = 0;
+            for ( int j=0 ; j<_testLabels[ i ].size() ; ++j ) {
+                if ( _testLabels[ i ][ j ] == 1 ) {
+                    actual = j;
+                    break;
+                }
+            }
+            cout << "Actual for " << i << ": " << actual << endl;
+            ++total;
+            if ( actual == prediction ) {
+                ++correct;
             }
         }
         
-        for ( int i=0 ; i<10 ; ++i ) {
-            Mat possibility = Mat::zeros( 1 , 10 , CV_32F );
-            possibility.at<float>(0 , i) = 1.0;
-            cout << "Prediction for " << i << ": " << _neuralNetwork->predict( testData ) << endl;
-        }
+        cout << "Accuracy: " << (1.0*correct/total) << endl;
     }
     
     
