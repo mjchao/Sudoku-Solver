@@ -24,6 +24,12 @@ using std::string;
 #include "opencv2/core/core.hpp"
 using cv::Mat;
 
+#define DIGIT_TRAIN_DATA_FILE "/Users/mjchao/Desktop/Sudoku-Solver/digits/train-images.idx3-ubyte"
+#define DIGIT_TRAIN_LABEL_FILE "/Users/mjchao/Desktop/Sudoku-Solver/digits/train-labels.idx1-ubyte"
+#define DIGIT_TEST_DATA_FILE "/Users/mjchao/Desktop/Sudoku-Solver/digits/t10k-images.idx3-ubyte"
+#define DIGIT_TEST_LABEL_FILE "/Users/mjchao/Desktop/Sudoku-Solver/digits/t10k-labels.idx1-ubyte"
+#define DIGIT_NN_DATA_FILE "/Users/mjchao/Desktop/Sudoku-Solver/digits/nndata.xml"
+
 
 int main(int argc, const char * argv[]) {
     
@@ -40,10 +46,15 @@ int main(int argc, const char * argv[]) {
     */
     
     DigitRecognizer d;
-    d.train( "/Users/mjchao/Desktop/Sudoku-Solver/digits/train-images.idx3-ubyte" ,
-            "/Users/mjchao/Desktop/Sudoku-Solver/digits/train-labels.idx1-ubyte" );
-    d.test( "/Users/mjchao/Desktop/Sudoku-Solver/digits/t10k-images.idx3-ubyte" ,
-           "/Users/mjchao/Desktop/Sudoku-Solver/digits/t10k-labels.idx1-ubyte" );
+    /*
+    d.train( DIGIT_TRAIN_DATA_FILE , DIGIT_TRAIN_LABEL_FILE );
+    d.test( DIGIT_TEST_DATA_FILE , DIGIT_TEST_LABEL_FILE );
+    d.save( DIGIT_NN_DATA_FILE );
+    //*/
+    
+    d.load( DIGIT_NN_DATA_FILE );
+    d.test( DIGIT_TEST_DATA_FILE , DIGIT_TEST_LABEL_FILE );
+    //*/
     
     return 0;
 }

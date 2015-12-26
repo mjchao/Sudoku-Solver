@@ -30,8 +30,10 @@ using std::ostringstream;
 #include "opencv2/core/core.hpp"
 using cv::Mat;
 using cv::Scalar;
+using cv::FileStorage;
 
 #include "opencv2/ml/ml.hpp"
+
 
 /**
  * A neural network trained by the MNIST dataset to
@@ -171,39 +173,37 @@ private:
 public:
     
     DigitRecognizer() {
-        
+        _neuralNetwork = cv::ml::ANN_MLP::create();
     }
     
-    /*
-    ~DigitRecognizer() {
-        //_neuralNetwork.release();
+    /**
+     * Loads the weights of the digit recognition neural network so that
+     * it doesn't have to be trained (a time-consuming effort)
+     */
+    void load( const string& filename ) {
+        FileStorage fs( filename , FileStorage::READ );
+        _neuralNetwork->read( fs.root() );
     }
     
-    DigitRecognizer( const DigitRecognizer& other ) {
-        if ( !_neuralNetwork.empty() ) {
-            _neuralNetwork.release();
-        }
-        _neuralNetwork = other._neuralNetwork;
+    /**
+     * Saves the weights of the neural network so that it doesn't
+     * have to be trained again in future iterations.
+     */
+    void save( const string& filename ) {
+        FileStorage fs( filename , FileStorage::WRITE );
+        _neuralNetwork->write( fs );
     }
-    
-    DigitRecognizer& operator=( const DigitRecognizer& other ) {
-        if ( !_neuralNetwork.empty() ) {
-            _neuralNetwork.release();
-        }
-        _neuralNetwork = other._neuralNetwork;
-        return *this;
-    }*/
     
     void train( const string& trainImageFile , const string& trainLabelFile ) {
         readTrainingData( trainImageFile , trainLabelFile );
         
-        _neuralNetwork = cv::ml::ANN_MLP::create();
         Mat layerSizes = Mat( 3 , 1 , CV_32SC1 );
         layerSizes.row( 0 ) = Scalar( _trainingData[ 0 ].size() );
         layerSizes.row( 1 ) = Scalar( 25 );
         layerSizes.row( 2 ) = Scalar( 10 );
         _neuralNetwork->setLayerSizes( layerSizes );
         _neuralNetwork->setActivationFunction( cv::ml::ANN_MLP::SIGMOID_SYM );
+        
         cout << "Training Data dimensions: " << _trainingData.size() << " " << _trainingData[ 0 ].size() << endl;
         cout << "Training Label dimensions: " << _trainingLabels.size() << " " << _trainingLabels[ 0 ].size() << endl;
         

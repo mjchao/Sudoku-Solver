@@ -81,6 +81,7 @@
 		BA40FBE41C2DE4AE00474451 /* train-images.idx3-ubyte */ = {isa = PBXFileReference; lastKnownFileType = file; path = "train-images.idx3-ubyte"; sourceTree = "<group>"; };
 		BA40FBE51C2DE4AE00474451 /* train-labels.idx1-ubyte */ = {isa = PBXFileReference; lastKnownFileType = file; path = "train-labels.idx1-ubyte"; sourceTree = "<group>"; };
 		BA40FBE61C2DE57A00474451 /* DigitRecognizer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DigitRecognizer.h; sourceTree = "<group>"; };
+		BAA154361C2F14AA005FEE3E /* nndata.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = nndata.xml; sourceTree = "<group>"; };
 		BAF96F091C1CCE7E005FA0CF /* Sudoku-Solver */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Sudoku-Solver"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BAF96F0C1C1CCE7E005FA0CF /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		BAF96F7F1C1CD243005FA0CF /* libopencv_calib3d.3.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libopencv_calib3d.3.0.0.dylib; sourceTree = "<group>"; };
@@ -201,6 +202,7 @@
 		BA40FBE11C2DE4AE00474451 /* digits */ = {
 			isa = PBXGroup;
 			children = (
+				BAA154361C2F14AA005FEE3E /* nndata.xml */,
 				BA40FBE21C2DE4AE00474451 /* t10k-images.idx3-ubyte */,
 				BA40FBE31C2DE4AE00474451 /* t10k-labels.idx1-ubyte */,
 				BA40FBE41C2DE4AE00474451 /* train-images.idx3-ubyte */,
