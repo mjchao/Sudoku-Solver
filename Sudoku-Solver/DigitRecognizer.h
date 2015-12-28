@@ -41,6 +41,8 @@ using cv::FileStorage;
  */
 class DigitRecognizer {
     
+friend int main( int argc , const char * argv[] );
+    
 private:
     
     struct TrainingDatum {

@@ -57,8 +57,17 @@ public:
                 ptr[ r*cellSideLength + c ] = invertedPuzzle.at<uchar>( r , 5*cellSideLength+c );
             }
         }
+        
         Mat resizedCell = Mat( 28 , 28 , CV_8UC1 );
+        int borderSize = 3;
         cv::resize( currentCell , resizedCell , resizedCell.size() );
+        for ( int r=0 ; r<28 ; ++r ) {
+            for ( int c=0 ; c<28 ; ++c ) {
+                if ( r < borderSize || c < borderSize || r > 28 - borderSize || c > 28 - borderSize ) {
+                    resizedCell.at<uchar>( r , c ) = 0;
+                }
+            }
+        }
         _disp.showImage( "Cell (0,0)" , resizedCell );
         
         Mat reshapedCell = Mat( 1 , 28*28 , CV_32F );
@@ -67,6 +76,7 @@ public:
                 reshapedCell.at<float>( 0 , r*28+c ) = static_cast<float>(resizedCell.at<uchar>(r , c)) / 255.0f;
             }
         }
+        //cout << reshapedCell << endl;
         
         cout << _digitRecognizer.predict( reshapedCell ) << endl;
     }

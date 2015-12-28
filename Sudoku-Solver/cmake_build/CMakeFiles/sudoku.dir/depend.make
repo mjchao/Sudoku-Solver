@@ -3,6 +3,7 @@
 
 CMakeFiles/sudoku.dir/main.cpp.o: ../DigitRecognizer.h
 CMakeFiles/sudoku.dir/main.cpp.o: ../PuzzleExtractor.h
+CMakeFiles/sudoku.dir/main.cpp.o: ../PuzzleReader.h
 CMakeFiles/sudoku.dir/main.cpp.o: ../Utils.h
 CMakeFiles/sudoku.dir/main.cpp.o: ../main.cpp
 

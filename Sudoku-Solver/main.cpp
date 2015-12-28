@@ -24,7 +24,7 @@ using std::string;
 #include "opencv2/core/core.hpp"
 using cv::Mat;
 
-#define SUDOKU_PIZZLE_FILE "/Users/mjchao/Desktop/Sudoku-Solver/puzzle.jpg"
+#define SUDOKU_PIZZLE_FILE "/Users/mjchao/Desktop/Sudoku-Solver/puzzle2.jpg"
 #define DIGIT_TRAIN_DATA_FILE "/Users/mjchao/Desktop/Sudoku-Solver/digits/train-images.idx3-ubyte"
 #define DIGIT_TRAIN_LABEL_FILE "/Users/mjchao/Desktop/Sudoku-Solver/digits/train-labels.idx1-ubyte"
 #define DIGIT_TEST_DATA_FILE "/Users/mjchao/Desktop/Sudoku-Solver/digits/t10k-images.idx3-ubyte"
@@ -54,14 +54,14 @@ int main(int argc, const char * argv[]) {
     //*/
     
     digitRecognizer.load( DIGIT_NN_DATA_FILE );
-    digitRecognizer.test( DIGIT_TEST_DATA_FILE , DIGIT_TEST_LABEL_FILE );
+    //digitRecognizer.test( DIGIT_TEST_DATA_FILE , DIGIT_TEST_LABEL_FILE );
     //*/
     
     PuzzleReader reader( isolatedPuzzle , digitRecognizer );
     vector<vector<int>> digits;
     reader.getDigits( digits );
     
-    
+    //cout << digitRecognizer._testData[ 0 ].image << endl;
     
     return 0;
 }
