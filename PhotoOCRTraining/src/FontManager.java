@@ -37,7 +37,6 @@ public class FontManager {
 				fonts.add( font );
 			}
 		}
-		
 	}
 	
 	public static Font getRandomFont() {
@@ -45,15 +44,10 @@ public class FontManager {
 		return fonts.get( randIdx ).deriveFont( Font.PLAIN , 12.0f );
 	}
 	
-	public static Font getRandomFont( boolean allowBold , int sizeMin , int sizeMax ) {
+	public static Font getRandomFont( boolean useBold , int sizeMin , int sizeMax ) {
 		int randIdx = (int)(Math.random()*fonts.size());
 		int randSize = sizeMin + (int)(Math.random()*(sizeMax-sizeMin));
-		int randType = Font.PLAIN;
-		if ( allowBold ) {
-			if ( Math.random() > 0.5 ) {
-				randType = Font.BOLD;
-			}
-		}
+		int randType = useBold ? Font.BOLD : Font.PLAIN;
 		return fonts.get( randIdx ).deriveFont( randType , randSize );
 	}
 }

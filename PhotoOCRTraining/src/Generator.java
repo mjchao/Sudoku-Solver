@@ -54,7 +54,7 @@ public class Generator extends JFrame {
 		double u1 = -.14713*r1 + -.28886*g1 + .436*b1; 
 		double c1 = .615*r1 + -.51499*g1 + -.10001*b1;
 		
-		int r2 = color2.getRed() , g2 = color1.getGreen() , b2 = color2.getBlue();
+		int r2 = color2.getRed() , g2 = color2.getGreen() , b2 = color2.getBlue();
 		double y2 = .299*r2 + .587*g2 + .114*b2;
 		double u2 = -.14713*r2 + -.28886*g2 + .436*b2; 
 		double c2 = .615*r2 + -.51499*g2 + -.10001*b2;
@@ -63,7 +63,10 @@ public class Generator extends JFrame {
 		double du = u1 - u2;
 		double dc = c1 - c2;
 		
-		return dy*dy + du*du + dc*dc <= 20*20*20;
+		int dr = Math.abs( r1 - r2 );
+		int dg = Math.abs( g1 - g2 );
+		int db = Math.abs( b1 - b2 );
+		return dr <= 30 || dg <= 30 || db <= 30 || (du*du + dc*dc <= 100*100) ;
 	}
 	
 	public void generate( int digit) {
@@ -76,9 +79,24 @@ public class Generator extends JFrame {
 		}
 		this.pnlDigit.setBackgroundColor( backgroundColor );
 		this.pnlDigit.setFontColor( fontColor );
+		System.out.println( backgroundColor.toString() + " " + fontColor.toString() );
 		this.pnlDigit.setFont( FontManager.getRandomFont( true , 12 , 24 ) );
 		this.pnlDigit.setDigit( digit );
-		this.pnlDigit.repaint();
+		
+		try {
+			SwingUtilities.invokeAndWait( new Runnable() {
+
+				@Override
+				public void run() {
+					pnlDigit.repaint();
+				}
+			} 
+			);
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -95,20 +113,6 @@ public class Generator extends JFrame {
 		Graphics2D g = rtn.createGraphics();
 		for ( int i=0 ; i<n ; ++i ) {
 			generate( digit );
-			try {
-				SwingUtilities.invokeAndWait( new Runnable() {
-
-					@Override
-					public void run() {
-						pnlDigit.repaint();
-					}
-				} 
-				);
-			} catch (InvocationTargetException e) {
-				e.printStackTrace();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
 			BufferedImage toStitch = this.pnlDigit.img;
 			int currRow = i / cols;
 			int currCol = i % cols;
@@ -168,7 +172,7 @@ public class Generator extends JFrame {
 		}
 		
 		private void addNoiseToImage() {
-			int noiseMagnitude = 3;
+			int noiseMagnitude = 1;
 			for ( int x=0 ; x<this.img.getWidth() ; ++x ) {
 				for ( int y=0 ; y<this.img.getHeight() ; ++y ) {
 					int colorBefore = this.img.getRGB( x , y );
