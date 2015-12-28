@@ -43,11 +43,39 @@ class DigitRecognizer {
     
 private:
     
-    vector<vector<unsigned char>> _trainingData;
-    vector<vector<unsigned char>> _trainingLabels;
+    struct TrainingDatum {
+        int numRows;
+        int numCols;
+        unsigned char numericLabel;
+        Mat image;
+        Mat label;
+        
+        TrainingDatum( int imageRows , int imageCols , int numLabels ) :
+            numRows( imageRows )
+            , numCols( imageCols )
+            , image( Mat( Size( numRows*numCols , 1 ) , CV_32F ) )
+            , label( Mat( Size( numLabels , 1 ) , CV_32F ) )
+        {
+
+        }
+        
+        void display() {
+            ImageDisplay disp;
+            ostringstream title;
+            Mat reshapedImage = Mat( numRows , numCols , CV_8UC1 );
+            for ( int row = 0 ; row < numRows ; ++row ) {
+                for ( int col = 0 ; col < numCols ; ++col ) {
+                    reshapedImage.at<unsigned char>( row , col ) =
+                        static_cast<unsigned char>( image.at<float>( row*numCols + col ) *255.0f );
+                }
+            }
+            title << "This is a " << static_cast<int>(numericLabel);
+            disp.showImage( title.str() , reshapedImage);
+        }
+    };
     
-    vector<vector<unsigned char>> _testData;
-    vector<vector<unsigned char>> _testLabels;
+    vector< TrainingDatum > _trainingData;
+    vector< TrainingDatum > _testData;
     
     cv::Ptr<cv::ml::ANN_MLP> _neuralNetwork;
     
@@ -71,21 +99,22 @@ private:
      * Reads an image with the given dimensions into the
      * given buffer.
      */
-    void readImage( ifstream& ifs , int rows , int cols , vector<unsigned char>& buffer ) {
+    void readImage( ifstream& ifs , int rows , int cols , TrainingDatum& buffer ) {
         unsigned char dataBuffer;
         for ( int r=0 ; r<rows ; ++r ) {
             for ( int c=0 ; c<cols ; ++c ) {
                 readByte( ifs , dataBuffer );
-                buffer[ r*cols + c ] = dataBuffer;
+                buffer.image.at<float>( r*cols+c ) = dataBuffer/255.0f;
             }
         }
     }
     
-    void readLabel( ifstream& ifs , vector<unsigned char>& buffer ) {
+    void readLabel( ifstream& ifs , TrainingDatum& buffer ) {
         unsigned char dataBuffer;
         readByte( ifs , dataBuffer );
-        buffer.resize( 10 , 0 );
-        buffer[ static_cast<int>(dataBuffer) ] = 1;
+        buffer.label = Mat::zeros( 1 , 10 , CV_32F );
+        buffer.label.at<float>( 0 , dataBuffer ) = 1.0f;
+        buffer.numericLabel = dataBuffer;
     }
     
     /**
@@ -112,8 +141,9 @@ private:
         //represents the color of the pixel
         //where 0 is completely white background and
         //255 is completely black foreground
-        _trainingData.resize( numImages , vector<unsigned char>( numRows*numCols ) );
+        _trainingData.reserve( numImages );
         for ( int i=0 ; i<numImages ; ++i ) {
+            _trainingData.push_back( TrainingDatum( numRows , numCols , 10 ) );
             readImage( ifs , numRows , numCols , _trainingData[ i ] );
         }
         
@@ -127,9 +157,8 @@ private:
         
         readInt( ifs , numImages );
         
-        _trainingLabels.resize( numImages );
         for ( int i=0 ; i<numImages ; ++i ) {
-            readLabel( ifs , _trainingLabels[ i ] );
+            readLabel( ifs , _trainingData[ i ] );
         }
     }
     
@@ -152,8 +181,9 @@ private:
         int numCols;
         readInt( ifs , numCols );
         
-        _testData.resize( numImages , vector<unsigned char>( numRows*numCols ) );
+        _testData.reserve( numImages );
         for ( int i=0 ; i<numImages ; ++i ) {
+            _testData.push_back( TrainingDatum( numRows , numCols , 10 ) );
             readImage( ifs , numRows , numCols , _testData[ i ] );
         }
         
@@ -163,10 +193,9 @@ private:
         
         readInt( ifs , magicNumber );
         readInt( ifs , numImages );
-        
-        _testLabels.resize( numImages );
+
         for ( int i=0 ; i<numImages ; ++i ) {
-            readLabel( ifs , _testLabels[ i ] );
+            readLabel( ifs , _testData[ i ] );
         }
     }
     
@@ -197,29 +226,26 @@ public:
     void train( const string& trainImageFile , const string& trainLabelFile ) {
         readTrainingData( trainImageFile , trainLabelFile );
         
-        Mat layerSizes = Mat( 4 , 1 , CV_32SC1 );
-        layerSizes.row( 0 ) = Scalar( _trainingData[ 0 ].size() );
+        Mat layerSizes = Mat( 3 , 1 , CV_32SC1 );
+        int numFeatures = _trainingData[ 0 ].numRows * _trainingData[ 0 ].numCols;
+        layerSizes.row( 0 ) = Scalar( numFeatures );
         layerSizes.row( 1 ) = Scalar( 25 );
-        layerSizes.row( 2 ) = Scalar( 25 );
-        layerSizes.row( 3 ) = Scalar( 10 );
+        //layerSizes.row( 2 ) = Scalar( 4 );
+        layerSizes.row( 2 ) = Scalar( 10 );
         _neuralNetwork->setLayerSizes( layerSizes );
         _neuralNetwork->setActivationFunction( cv::ml::ANN_MLP::SIGMOID_SYM );
         
-        cout << "Training Data dimensions: " << _trainingData.size() << " " << _trainingData[ 0 ].size() << endl;
-        cout << "Training Label dimensions: " << _trainingLabels.size() << " " << _trainingLabels[ 0 ].size() << endl;
+        cout << "Training Data dimensions: " << _trainingData.size() <<
+                        " images, " << _trainingData.size() << " labels" << endl;
         
-        Mat trainingData = Mat( _trainingData.size() , _trainingData[ 0 ].size() , CV_32F );
+        Mat trainingData = Mat( _trainingData.size() , numFeatures , CV_32F );
         for ( int i=0 ; i<_trainingData.size() ; ++i ) {
-            for ( int j=0 ; j<_trainingData[ i ].size() ; ++j ) {
-                trainingData.at<float>(i , j) = _trainingData[ i ][ j ]/255.0;
-            }
+            _trainingData[ i ].image.copyTo( trainingData.row( i ) );
         }
         
-        Mat trainingLabels = Mat( _trainingLabels.size() , _trainingLabels[ 0 ].size() , CV_32F );
-        for ( int i=0 ; i<_trainingLabels.size() ; ++i ) {
-            for ( int j=0 ; j<_trainingLabels[ i ].size() ; ++j ) {
-                trainingLabels.at<float>(i , j) = _trainingLabels[ i ][ j ] * 1.0f;
-            }
+        Mat trainingLabels = Mat( _trainingData.size() , 10 , CV_32F );
+        for ( int i=0 ; i<_trainingData.size() ; ++i ) {
+            _trainingData[ i ].label.copyTo( trainingLabels.row( i ) );
         }
         
         if ( !_neuralNetwork->train( trainingData , cv::ml::ROW_SAMPLE , trainingLabels ) ) {
@@ -233,23 +259,16 @@ public:
         
         int correct = 0;
         int total = 0;
+        int numFeatures = _testData[ 0 ].numRows * _testData[ 0 ].numCols;
         for ( int i=0 ; i<_testData.size() ; ++i ) {
             
-            Mat testData = Mat( 1 , _testData[ 0 ].size() , CV_32F );
-            for ( int j=0 ; j<_testData[ i ].size() ; ++j ) {
-                testData.at<float>( 0 , j ) = _testData[ i ][ j ]/255.0;
-            }
+            Mat testData = Mat( 1 , numFeatures , CV_32F );
+            _testData[ i ].image.copyTo( testData.row( 0 ) );
             
             int prediction = predict( testData );
+            int actual = static_cast<int>( _testData[ i ].numericLabel );
             cout << "Prediction for " << i << ": " << _neuralNetwork->predict( testData ) << endl;
             
-            float actual = 0;
-            for ( int j=0 ; j<_testLabels[ i ].size() ; ++j ) {
-                if ( _testLabels[ i ][ j ] == 1 ) {
-                    actual = j;
-                    break;
-                }
-            }
             cout << "Actual for " << i << ": " << actual << endl;
             ++total;
             if ( actual == prediction ) {

@@ -46,10 +46,11 @@ int main(int argc, const char * argv[]) {
     //*/
     
     DigitRecognizer digitRecognizer;
+    
     /*
     digitRecognizer.train( DIGIT_TRAIN_DATA_FILE , DIGIT_TRAIN_LABEL_FILE );
     digitRecognizer.test( DIGIT_TEST_DATA_FILE , DIGIT_TEST_LABEL_FILE );
-    //digitRecognizer.save( DIGIT_NN_DATA_FILE );
+    digitRecognizer.save( DIGIT_NN_DATA_FILE );
     //*/
     
     digitRecognizer.load( DIGIT_NN_DATA_FILE );
