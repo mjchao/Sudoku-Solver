@@ -75,7 +75,7 @@ public:
             for ( int c=0 ; c<28 ; ++c ) {
                 reshapedCell.at<float>( 0 , r*28+c ) = static_cast<float>(resizedCell.at<uchar>(r , c)) / 255.0f;
             }
-        }
+        
         //cout << reshapedCell << endl;
         
         cout << _digitRecognizer.predict( reshapedCell ) << endl;
