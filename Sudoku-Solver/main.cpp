@@ -18,12 +18,13 @@ using std::vector;
 using std::string;
 
 #include "PuzzleExtractor.h"
-
 #include "DigitRecognizer.h"
+#include "PuzzleReader.h"
 
 #include "opencv2/core/core.hpp"
 using cv::Mat;
 
+#define SUDOKU_PIZZLE_FILE "/Users/mjchao/Desktop/Sudoku-Solver/puzzle.jpg"
 #define DIGIT_TRAIN_DATA_FILE "/Users/mjchao/Desktop/Sudoku-Solver/digits/train-images.idx3-ubyte"
 #define DIGIT_TRAIN_LABEL_FILE "/Users/mjchao/Desktop/Sudoku-Solver/digits/train-labels.idx1-ubyte"
 #define DIGIT_TEST_DATA_FILE "/Users/mjchao/Desktop/Sudoku-Solver/digits/t10k-images.idx3-ubyte"
@@ -33,28 +34,33 @@ using cv::Mat;
 
 int main(int argc, const char * argv[]) {
     
-    /*
+    
     Mat puzzle;
     
     //Path    /Users/mjchao/Desktop/Sudoku-Solver/puzzle.jpg
-    string imageFilename = "/Users/mjchao/Desktop/Sudoku-Solver/puzzle.jpg";
     //cin >> imageFilename;
-    puzzle = imread( imageFilename.c_str() , 0 );
+    puzzle = imread( SUDOKU_PIZZLE_FILE , 0 );
 
     PuzzleExtractor puzzleExtractor( puzzle );
-    puzzleExtractor.extractPuzzle();
-    */
+    Mat isolatedPuzzle = puzzleExtractor.extractPuzzle();
+    //*/
     
-    DigitRecognizer d;
+    DigitRecognizer digitRecognizer;
     /*
-    d.train( DIGIT_TRAIN_DATA_FILE , DIGIT_TRAIN_LABEL_FILE );
-    d.test( DIGIT_TEST_DATA_FILE , DIGIT_TEST_LABEL_FILE );
-    d.save( DIGIT_NN_DATA_FILE );
+    digitRecognizer.train( DIGIT_TRAIN_DATA_FILE , DIGIT_TRAIN_LABEL_FILE );
+    digitRecognizer.test( DIGIT_TEST_DATA_FILE , DIGIT_TEST_LABEL_FILE );
+    //digitRecognizer.save( DIGIT_NN_DATA_FILE );
     //*/
     
-    d.load( DIGIT_NN_DATA_FILE );
-    d.test( DIGIT_TEST_DATA_FILE , DIGIT_TEST_LABEL_FILE );
+    digitRecognizer.load( DIGIT_NN_DATA_FILE );
+    digitRecognizer.test( DIGIT_TEST_DATA_FILE , DIGIT_TEST_LABEL_FILE );
     //*/
+    
+    PuzzleReader reader( isolatedPuzzle , digitRecognizer );
+    vector<vector<int>> digits;
+    reader.getDigits( digits );
+    
+    
     
     return 0;
 }

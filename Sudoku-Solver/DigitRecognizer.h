@@ -197,10 +197,11 @@ public:
     void train( const string& trainImageFile , const string& trainLabelFile ) {
         readTrainingData( trainImageFile , trainLabelFile );
         
-        Mat layerSizes = Mat( 3 , 1 , CV_32SC1 );
+        Mat layerSizes = Mat( 4 , 1 , CV_32SC1 );
         layerSizes.row( 0 ) = Scalar( _trainingData[ 0 ].size() );
         layerSizes.row( 1 ) = Scalar( 25 );
-        layerSizes.row( 2 ) = Scalar( 10 );
+        layerSizes.row( 2 ) = Scalar( 25 );
+        layerSizes.row( 3 ) = Scalar( 10 );
         _neuralNetwork->setLayerSizes( layerSizes );
         _neuralNetwork->setActivationFunction( cv::ml::ANN_MLP::SIGMOID_SYM );
         
@@ -239,7 +240,7 @@ public:
                 testData.at<float>( 0 , j ) = _testData[ i ][ j ]/255.0;
             }
             
-            float prediction = _neuralNetwork->predict( testData );
+            int prediction = predict( testData );
             cout << "Prediction for " << i << ": " << _neuralNetwork->predict( testData ) << endl;
             
             float actual = 0;
@@ -256,7 +257,15 @@ public:
             }
         }
         
-        cout << "Accuracy: " << (1.0*correct/total) << endl;
+        cout << "Test set accuracy: " << (1.0*correct/total) << endl;
+    }
+    
+    /**
+     * Takes an image as a 28x28 grid of pixels and outputs the
+     * neural network's prediction as to what number it is (0-9).
+     */
+    int predict( const Mat& img ) const {
+        return static_cast<int>( _neuralNetwork->predict( img ) );
     }
     
     

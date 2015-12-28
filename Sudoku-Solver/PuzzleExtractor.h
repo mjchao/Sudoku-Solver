@@ -25,7 +25,7 @@ using std::sqrt;
 using namespace cv;
 
 /**
- * Extracts the grid from a Sudoku puzzle
+ * Extracts the 9x9 grid from a Sudoku puzzle
  */
 class PuzzleExtractor {
     
@@ -150,7 +150,7 @@ private:
 public:
     
     PuzzleExtractor( const Mat& puzzle ) : _puzzle( puzzle ) {
-        //_disp.disable();
+        _disp.disable();
     }
     
     Mat extractPuzzle() {
