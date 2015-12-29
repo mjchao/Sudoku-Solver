@@ -57,11 +57,28 @@ int main(int argc, const char * argv[]) {
     //digitRecognizer.test( DIGIT_TEST_DATA_FILE , DIGIT_TEST_LABEL_FILE );
     //*/
     
+    /*
     PuzzleReader reader( isolatedPuzzle , digitRecognizer );
     vector<vector<int>> digits;
     reader.getDigits( digits );
+    //*/
     
     //cout << digitRecognizer._testData[ 0 ].image << endl;
     
+    Mat test = Mat( 28 , 28 , CV_8UC1 );
+    ifstream fin;
+    fin.open( "/Users/mjchao/Desktop/Sudoku-Solver/PhotoOCRTraining/train/2/1" );
+    for ( int i=0 ; i<28*28; ++i ) {
+        int row = i/28;
+        int col = i%28;
+        int data;
+        fin >> data;
+        test.at<uchar>( row , col ) = static_cast<uchar>( data );
+    }
+    imshow( "Test" , test );
+    waitKey( 0 );
+    
     return 0;
 }
+
+

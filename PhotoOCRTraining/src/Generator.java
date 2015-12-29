@@ -4,7 +4,10 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
 
@@ -79,7 +82,6 @@ public class Generator extends JFrame {
 		}
 		this.pnlDigit.setBackgroundColor( backgroundColor );
 		this.pnlDigit.setFontColor( fontColor );
-		System.out.println( backgroundColor.toString() + " " + fontColor.toString() );
 		this.pnlDigit.setFont( FontManager.getRandomFont( true , 12 , 24 ) );
 		this.pnlDigit.setDigit( digit );
 		
@@ -116,9 +118,44 @@ public class Generator extends JFrame {
 			BufferedImage toStitch = this.pnlDigit.img;
 			int currRow = i / cols;
 			int currCol = i % cols;
-			g.drawImage( toStitch , currCol*28 , currRow*28 , null );
+			try {
+				SwingUtilities.invokeAndWait( new Runnable() {
+					
+					@Override
+					public void run() {
+						g.drawImage( toStitch , currCol*28 , currRow*28 , null );
+					}
+				});
+			} catch (InvocationTargetException e1) {
+				e1.printStackTrace();
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
+			}
+			
+			try {
+				saveTrainingImageData( digit , i , toStitch );
+			}
+			catch ( IOException e ) {
+				System.out.println( "Failed to save training data." );
+			}
 		}
 		return rtn;
+	}
+	
+	public void saveTrainingImageData( int digit , int imgIdx , BufferedImage toSave ) throws IOException {
+		String filename = "train/" + digit + "/" + imgIdx;
+		PrintWriter out = new PrintWriter( new BufferedWriter( new FileWriter( filename ) ) );
+		for ( int y=0 ; y<28 ; ++y ) {
+			for ( int x=0 ; x<28 ; ++x ) {
+				int color = toSave.getRGB( x , y );
+				int red = (color & 0x00ff0000) >> 16;
+				int green = (color & 0x0000ff00) >> 8;
+				int blue = (color & 0x000000ff) >> 0;
+				int average = (red + green + blue)/3;
+				out.println( 255 - average );
+			}
+		}
+		out.close();
 	}
 	
 
