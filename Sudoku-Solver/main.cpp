@@ -23,9 +23,10 @@ using std::string;
 
 #include "opencv2/core/core.hpp"
 using cv::Mat;
+using cv::imshow;
 
 //REMINDER: Puzzle3 is PNG not JPG
-#define SUDOKU_PIZZLE_FILE "/Users/mjchao/Desktop/Sudoku-Solver/puzzle.jpg"
+#define SUDOKU_PUZZLE_FILE "/Users/mjchao/Desktop/Sudoku-Solver/puzzle3.png"
 
 //DIGIT dataset refers to MNIST dataset which seems too clean and doesn't
 //generalize well to printed characters
@@ -45,10 +46,11 @@ using cv::Mat;
 int main(int argc, const char * argv[]) {
     
     Mat puzzle;
-    puzzle = imread( SUDOKU_PIZZLE_FILE , 0 );
+    puzzle = imread( SUDOKU_PUZZLE_FILE , 0 );
 
     PuzzleExtractor puzzleExtractor( puzzle );
     Mat isolatedPuzzle = puzzleExtractor.extractPuzzle();
+    
     //*/
     
     DigitRecognizer digitRecognizer;
@@ -65,7 +67,7 @@ int main(int argc, const char * argv[]) {
     
     PuzzleReader reader( isolatedPuzzle , digitRecognizer );
     vector<vector<int>> digits;
-    reader.getDigits( digits );
+    reader.getDigits( digits , true );
     //*/
     
     /*

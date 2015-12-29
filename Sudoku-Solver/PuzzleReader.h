@@ -29,10 +29,10 @@ private:
     const DigitRecognizer& _digitRecognizer;
     ImageDisplay _disp;
     
-    int countWhitePixels( const Mat& cell ) {
+    int countWhitePixelsInCenter( const Mat& cell ) {
         int count = 0;
-        for ( int r=0 ; r<cell.size().height ; ++r ) {
-            for ( int c=0 ; c<cell.size().width ; ++c ) {
+        for ( int r=cell.size().height/2-2 ; r<cell.size().height/2+2 ; ++r ) {
+            for ( int c=cell.size().width/2-2 ; c<cell.size().width+2 ; ++c ) {
                 if ( static_cast<int>( cell.at<uchar>(r , c) ) == 255 ) {
                     ++count;
                 }
@@ -68,7 +68,7 @@ private:
                 //don't penalize the top edge because it tends to
                 //be accurate - but the left, right, and bottom edges
                 //tend to have extraneous gridlines
-                if ( r < 0 || r > 20-borderSize || c < borderSize || c > 20 - borderSize ) {
+                if ( r+borderSize < 0 || r > 20-borderSize || c < borderSize || c > 20 - borderSize ) {
                     shrunkenCell.at<uchar>( r , c ) = 0;
                 }
                 else {
@@ -78,8 +78,8 @@ private:
         }
         
         //if there aren't enough white pixels, assume it is an empty square
-        int whitePixels = countWhitePixels( shrunkenCell );
-        if ( whitePixels < 33 ) {
+        int whitePixels = countWhitePixelsInCenter( shrunkenCell );
+        if ( whitePixels < 8 ) {
             return -1;
         }
         /*
@@ -138,8 +138,6 @@ private:
         Mat paddedDigit = Mat::zeros( 28 , 28 , CV_8UC1 );
         Rect copyLoc( (28-width)/2 , (28-height)/2 , width , height );
         isolatedDigit.copyTo( paddedDigit(copyLoc) );
-        _disp.showImage( "Padded Digit" , paddedDigit );
-        
         
         Mat reshapedDigit = Mat( 1 , 28*28 , CV_32F );
         for ( int r=0 ; r<28 ; ++r ) {
@@ -159,7 +157,12 @@ public:
         _disp.disable();
     }
     
-    void getDigits( vector<vector<int>>& digits ) {
+    /**
+     * Gets the digits in the Sudoku puzzle. If dilateFirst is set to true,
+     * then the image will be dilated before we try to read the digits. This
+     * should be used if the font of the puzzle is not thick enough.
+     */
+    void getDigits( vector<vector<int>>& digits , bool dilateFirst ) {
         _disp.setDestroyAfterShowing( false );
         digits.resize( 9 , vector<int>(9) );
         
@@ -168,6 +171,12 @@ public:
         Mat invertedPuzzle = _puzzle.clone();
         adaptiveThreshold( _puzzle , invertedPuzzle , 255 ,
             CV_ADAPTIVE_THRESH_GAUSSIAN_C , CV_THRESH_BINARY_INV , 101 , 1 );
+        
+        if ( dilateFirst ) {
+            Mat kernel = (Mat_<uchar>(3,3) << 0,1,0,1,0,1,1,0,1,0 );
+            dilate( invertedPuzzle , invertedPuzzle , kernel );
+        }
+        
         _disp.showImage( "Inverted Puzzle" , invertedPuzzle );
         
         int cellSideLength = ceil(static_cast<double>(invertedPuzzle.size().width)/9.0);
