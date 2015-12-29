@@ -31,6 +31,7 @@ using cv::Mat;
 #define DIGIT_TEST_LABEL_FILE "/Users/mjchao/Desktop/Sudoku-Solver/digits/t10k-labels.idx1-ubyte"
 #define DIGIT_NN_DATA_FILE "/Users/mjchao/Desktop/Sudoku-Solver/digits/nndata.xml"
 
+#define DIGIT_TRAIN_DIRECTORY "/Users/mjchao/Desktop/Sudoku-Solver/PhotoOCRTraining"
 
 int main(int argc, const char * argv[]) {
     
@@ -47,13 +48,13 @@ int main(int argc, const char * argv[]) {
     
     DigitRecognizer digitRecognizer;
     
-    /*
-    digitRecognizer.train( DIGIT_TRAIN_DATA_FILE , DIGIT_TRAIN_LABEL_FILE );
-    digitRecognizer.test( DIGIT_TEST_DATA_FILE , DIGIT_TEST_LABEL_FILE );
-    digitRecognizer.save( DIGIT_NN_DATA_FILE );
+    
+    digitRecognizer.train( DIGIT_TRAIN_DIRECTORY );
+    //digitRecognizer.test( DIGIT_TEST_DATA_FILE , DIGIT_TEST_LABEL_FILE );
+    //digitRecognizer.save( DIGIT_NN_DATA_FILE );
     //*/
     
-    digitRecognizer.load( DIGIT_NN_DATA_FILE );
+    //digitRecognizer.load( DIGIT_NN_DATA_FILE );
     //digitRecognizer.test( DIGIT_TEST_DATA_FILE , DIGIT_TEST_LABEL_FILE );
     //*/
     
@@ -64,21 +65,6 @@ int main(int argc, const char * argv[]) {
     //*/
     
     //cout << digitRecognizer._testData[ 0 ].image << endl;
-    
-    Mat test = Mat( 28 , 28 , CV_8UC1 );
-    ifstream fin;
-    fin.open( "/Users/mjchao/Desktop/Sudoku-Solver/PhotoOCRTraining/train/0/0" );
-    for ( int i=0 ; i<2500 ; ++i ) {
-        for ( int i=0 ; i<28*28; ++i ) {
-            int row = i/28;
-            int col = i%28;
-            char data;
-            fin.get( data );
-            test.at<uchar>( row , col ) = static_cast<uchar>( data );
-        }
-    }
-    imshow( "Test" , test );
-    waitKey( 0 );
     
     return 0;
 }

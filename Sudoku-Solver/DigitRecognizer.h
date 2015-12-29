@@ -111,56 +111,32 @@ private:
         }
     }
     
-    void readLabel( ifstream& ifs , TrainingDatum& buffer ) {
-        unsigned char dataBuffer;
-        readByte( ifs , dataBuffer );
+    void setLabel( TrainingDatum& buffer , int label ) {
         buffer.label = Mat::zeros( 1 , 10 , CV_32F );
-        buffer.label.at<float>( 0 , dataBuffer ) = 1.0f;
-        buffer.numericLabel = dataBuffer;
+        buffer.label.at<float>( 0 , label ) = 1.0f;
+        buffer.numericLabel = label;
     }
     
     /**
      * Reads in the training data for the digit classifier
      */
-    void readTrainingData( const string& trainImageFile , const string& trainLabelFile ) {
-        ifstream ifs;
-        ifs.open( trainImageFile.c_str() , std::ios::binary );
+    void readTrainingData( const string& trainDirectory ) {
         
-        int magicNumber;
-        readInt( ifs , magicNumber );
+        //we have generated 2500 training samples for each of the
+        //10 digits, for a total of 25000 training samples
+        _trainingData.reserve( 25000 );
         
-        int numImages;
-        readInt( ifs , numImages );
-        
-        int numRows;
-        readInt( ifs , numRows );
-        
-        int numCols;
-        readInt( ifs , numCols );
-        
-        //read in image data byte by byte
-        //images are 28 x 28 and each byte from 0-255
-        //represents the color of the pixel
-        //where 0 is completely white background and
-        //255 is completely black foreground
-        _trainingData.reserve( numImages );
-        for ( int i=0 ; i<numImages ; ++i ) {
-            _trainingData.push_back( TrainingDatum( numRows , numCols , 10 ) );
-            readImage( ifs , numRows , numCols , _trainingData[ i ] );
-        }
-        
-        //finished reading in training data - reuse stream to read in
-        //training labels
-        ifs.close();
-        
-        //read in the labels for each image
-        ifs.open( trainLabelFile );
-        readInt( ifs , magicNumber );
-        
-        readInt( ifs , numImages );
-        
-        for ( int i=0 ; i<numImages ; ++i ) {
-            readLabel( ifs , _trainingData[ i ] );
+        for ( int digit=0 ; digit<=9 ; ++digit ) {
+            ostringstream filename;
+            filename << trainDirectory << digit << "/" << digit;
+            ifstream ifs;
+            ifs.open( filename.str() );
+            for ( int sampleIdx=0 ; sampleIdx<2500 ; ++sampleIdx ) {
+                _trainingData.push_back( TrainingDatum( 28 , 28 , 10 ) );
+                readImage( ifs , 28 , 28 , _trainingData.back() );
+                setLabel( _trainingData.back() , digit );
+            }
+            ifs.close();
         }
     }
     
@@ -197,7 +173,8 @@ private:
         readInt( ifs , numImages );
 
         for ( int i=0 ; i<numImages ; ++i ) {
-            readLabel( ifs , _testData[ i ] );
+            //FIXME
+            //readLabel( ifs , _testData[ i ] );
         }
     }
     
@@ -225,13 +202,13 @@ public:
         _neuralNetwork->write( fs );
     }
     
-    void train( const string& trainImageFile , const string& trainLabelFile ) {
-        readTrainingData( trainImageFile , trainLabelFile );
+    void train( const string& trainDirectory ) {
+        readTrainingData( trainDirectory );
         
         Mat layerSizes = Mat( 3 , 1 , CV_32SC1 );
         int numFeatures = _trainingData[ 0 ].numRows * _trainingData[ 0 ].numCols;
         layerSizes.row( 0 ) = Scalar( numFeatures );
-        layerSizes.row( 1 ) = Scalar( 25 );
+        layerSizes.row( 1 ) = Scalar( 4 );
         //layerSizes.row( 2 ) = Scalar( 4 );
         layerSizes.row( 2 ) = Scalar( 10 );
         _neuralNetwork->setLayerSizes( layerSizes );
@@ -254,6 +231,7 @@ public:
             cout << "Training failed" << endl;
             exit( 1 );
         }
+
     }
     
     void test( const string& testImageFile , const string& testLabelFile ) {
