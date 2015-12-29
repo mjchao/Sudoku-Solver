@@ -25,17 +25,23 @@ using std::string;
 using cv::Mat;
 
 #define SUDOKU_PIZZLE_FILE "/Users/mjchao/Desktop/Sudoku-Solver/puzzle2.jpg"
+
+//DIGIT dataset refers to MNIST dataset which seems too clean and doesn't
+//generalize well to printed characters
 #define DIGIT_TRAIN_DATA_FILE "/Users/mjchao/Desktop/Sudoku-Solver/digits/train-images.idx3-ubyte"
 #define DIGIT_TRAIN_LABEL_FILE "/Users/mjchao/Desktop/Sudoku-Solver/digits/train-labels.idx1-ubyte"
 #define DIGIT_TEST_DATA_FILE "/Users/mjchao/Desktop/Sudoku-Solver/digits/t10k-images.idx3-ubyte"
 #define DIGIT_TEST_LABEL_FILE "/Users/mjchao/Desktop/Sudoku-Solver/digits/t10k-labels.idx1-ubyte"
 #define DIGIT_NN_DATA_FILE "/Users/mjchao/Desktop/Sudoku-Solver/digits/nndata.xml"
 
-#define DIGIT_TRAIN_DIRECTORY "/Users/mjchao/Desktop/Sudoku-Solver/PhotoOCRTraining/train"
-#define DIGIT_TEST_DIRECTORY "/Users/mjchao/Desktop/Sudoku-Solver/PhotoOCRTraining/test"
+//DIGIT2 dataset refers to custom generated set that is more dirty and
+//of printed characters. Hopefully DIGIT2 will generalize better to printed
+//characters
+#define DIGIT2_TRAIN_DIRECTORY "/Users/mjchao/Desktop/Sudoku-Solver/PhotoOCRTraining/train"
+#define DIGIT2_TEST_DIRECTORY "/Users/mjchao/Desktop/Sudoku-Solver/PhotoOCRTraining/test"
+#define DIGIT2_NN_DATA_FILE "/Users/mjchao/Desktop/Sudoku-Solver/PhotoOCRTraining/nndata.xml"
 
 int main(int argc, const char * argv[]) {
-    
     
     Mat puzzle;
     
@@ -50,13 +56,13 @@ int main(int argc, const char * argv[]) {
     DigitRecognizer digitRecognizer;
     
     
-    //digitRecognizer.train( DIGIT_TRAIN_DIRECTORY );
-    //digitRecognizer.test( DIGIT_TEST_DIRECTORY );
-    //digitRecognizer.save( DIGIT_NN_DATA_FILE );
+    digitRecognizer.train( DIGIT2_TRAIN_DIRECTORY );
+    digitRecognizer.test( DIGIT2_TEST_DIRECTORY );
+    digitRecognizer.save( DIGIT2_NN_DATA_FILE );
     //*/
     
-    digitRecognizer.load( DIGIT_NN_DATA_FILE );
-    digitRecognizer.test( DIGIT_TEST_DIRECTORY );
+    //digitRecognizer.load( DIGIT_NN_DATA_FILE );
+    //digitRecognizer.test( DIGIT2_TEST_DIRECTORY );
     //*/
     
     /*

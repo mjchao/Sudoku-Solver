@@ -186,12 +186,12 @@ public:
     void train( const string& trainDirectory ) {
         readTrainingData( trainDirectory );
         
-        Mat layerSizes = Mat( 3 , 1 , CV_32SC1 );
+        Mat layerSizes = Mat( 4 , 1 , CV_32SC1 );
         int numFeatures = _trainingData[ 0 ].numRows * _trainingData[ 0 ].numCols;
         layerSizes.row( 0 ) = Scalar( numFeatures );
-        layerSizes.row( 1 ) = Scalar( 4 );
-        //layerSizes.row( 2 ) = Scalar( 4 );
-        layerSizes.row( 2 ) = Scalar( 10 );
+        layerSizes.row( 1 ) = Scalar( 25 );
+        layerSizes.row( 2 ) = Scalar( 25 );
+        layerSizes.row( 3 ) = Scalar( 10 );
         _neuralNetwork->setLayerSizes( layerSizes );
         _neuralNetwork->setActivationFunction( cv::ml::ANN_MLP::SIGMOID_SYM );
         
