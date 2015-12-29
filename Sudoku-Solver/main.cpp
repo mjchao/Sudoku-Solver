@@ -24,7 +24,8 @@ using std::string;
 #include "opencv2/core/core.hpp"
 using cv::Mat;
 
-#define SUDOKU_PIZZLE_FILE "/Users/mjchao/Desktop/Sudoku-Solver/puzzle2.jpg"
+//REMINDER: Puzzle3 is PNG not JPG
+#define SUDOKU_PIZZLE_FILE "/Users/mjchao/Desktop/Sudoku-Solver/puzzle.jpg"
 
 //DIGIT dataset refers to MNIST dataset which seems too clean and doesn't
 //generalize well to printed characters
@@ -44,9 +45,6 @@ using cv::Mat;
 int main(int argc, const char * argv[]) {
     
     Mat puzzle;
-    
-    //Path    /Users/mjchao/Desktop/Sudoku-Solver/puzzle.jpg
-    //cin >> imageFilename;
     puzzle = imread( SUDOKU_PIZZLE_FILE , 0 );
 
     PuzzleExtractor puzzleExtractor( puzzle );
@@ -55,24 +53,36 @@ int main(int argc, const char * argv[]) {
     
     DigitRecognizer digitRecognizer;
     
-    
+    /*
     digitRecognizer.train( DIGIT2_TRAIN_DIRECTORY );
     digitRecognizer.test( DIGIT2_TEST_DIRECTORY );
     digitRecognizer.save( DIGIT2_NN_DATA_FILE );
     //*/
     
-    //digitRecognizer.load( DIGIT_NN_DATA_FILE );
-    //digitRecognizer.test( DIGIT2_TEST_DIRECTORY );
+    digitRecognizer.load( DIGIT2_NN_DATA_FILE );
+    digitRecognizer.test( DIGIT2_TEST_DIRECTORY );
     //*/
     
-    /*
     PuzzleReader reader( isolatedPuzzle , digitRecognizer );
     vector<vector<int>> digits;
     reader.getDigits( digits );
     //*/
     
-    //cout << digitRecognizer._testData[ 0 ].image << endl;
-    
+    /*
+    Mat test = Mat( 28 , 28 , CV_8UC1 );
+    ifstream fin;
+    fin.open( "/Users/mjchao/Desktop/Sudoku-Solver/PhotoOCRTraining/test/0/0" );
+    for ( int i=0 ; i<2500 ; ++i ) {
+        for ( int i=0 ; i<28*28; ++i ) {
+            int row = i/28;
+            int col = i%28;
+            char data;
+            fin.get( data );
+            test.at<uchar>( row , col ) = static_cast<uchar>( data );
+        }
+    }
+    imshow( "Test" , test );
+    waitKey( 0 );*/
     return 0;
 }
 

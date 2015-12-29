@@ -165,7 +165,7 @@ public:
         //find a point that is part of the largest blob of white. We assume
         //that the Sudoku Puzzle is going to be the largest piece of white
         //in the image and that other stuff is noise.
-        int maxArea = 0;
+        int maxArea = -1;
         Point maxPoint;
         for ( int y=0 ; y<outerBox.size().height ; ++y ) {
             uchar* row = outerBox.ptr(y);

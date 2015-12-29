@@ -29,12 +29,134 @@ private:
     const DigitRecognizer& _digitRecognizer;
     ImageDisplay _disp;
     
+    int countWhitePixels( const Mat& cell ) {
+        int count = 0;
+        for ( int r=0 ; r<cell.size().height ; ++r ) {
+            for ( int c=0 ; c<cell.size().width ; ++c ) {
+                if ( static_cast<int>( cell.at<uchar>(r , c) ) == 255 ) {
+                    ++count;
+                }
+            }
+        }
+        return count;
+    }
+    
+    void getWhiteBoundaries( const Mat& cell , int& leftX , int& rightX , int& topY , int& bottomY) {
+        for ( int r=0 ; r<cell.size().height ; ++r ) {
+            for ( int c=0 ; c<cell.size().width ; ++c ) {
+                if ( static_cast<int>( cell.at<uchar>( r , c ) ) == 255 ) {
+                    leftX = min( leftX , c );
+                    rightX = max( rightX , c );
+                    topY = min( r , topY );
+                    bottomY = max( r , bottomY );
+                }
+            }
+        }
+    }
+    
+    int getDigit( const Mat& cell ) {
+        
+        //first shrink the digit so that it fits in a 20x20 image
+        Mat shrunkenCell = Mat( 20 , 20 , CV_8UC1 );
+        cv::resize( cell , shrunkenCell , shrunkenCell.size() );
+        
+        int borderSize = 4;
+        //then turn everything into black and white
+        for ( int r=0 ; r<20 ; ++r ) {
+            for ( int c=0 ; c<20 ; ++c ) {
+                
+                //don't penalize the top edge because it tends to
+                //be accurate - but the left, right, and bottom edges
+                //tend to have extraneous gridlines
+                if ( r < 0 || r > 20-borderSize || c < borderSize || c > 20 - borderSize ) {
+                    shrunkenCell.at<uchar>( r , c ) = 0;
+                }
+                else {
+                    shrunkenCell.at<uchar>( r , c ) = shrunkenCell.at<uchar>( r , c ) >= 128 ? 255 : 0;
+                }
+            }
+        }
+        
+        //if there aren't enough white pixels, assume it is an empty square
+        int whitePixels = countWhitePixels( shrunkenCell );
+        if ( whitePixels < 33 ) {
+            return -1;
+        }
+        /*
+        // DEBUG
+        else {
+            ostringstream title;
+            title << "This cell has " << whitePixels << " white pixels";
+            _disp.enable();
+            _disp.showImage( title.str() , shrunkenCell );
+            _disp.disable();
+        }//*/
+        
+        //only keep the biggest blob of white - everything else should be
+        //noise and turned to black
+        int maxArea = -1;
+        Point maxPoint;
+        for ( int r=0 ; r<20 ; ++r ) {
+            uchar* row = shrunkenCell.ptr( r );
+            for ( int c=0 ; c<20 ; ++c ) {
+                if ( row[ c ] == 255 ) {
+                    int area = floodFill( shrunkenCell , Point( c , r ) , CV_RGB( 0 , 0 , 64 ) );
+                    if ( area > maxArea ) {
+                        maxArea = area;
+                        maxPoint = Point( c , r );
+                    }
+                }
+            }
+        }
+        
+        //keep biggest area white
+        floodFill( shrunkenCell , maxPoint , CV_RGB( 255 , 255 , 255 ) );
+        
+        //keep all other areas black
+        for ( int r=0 ; r<20 ; ++r ) {
+            uchar* row = shrunkenCell.ptr( r );
+            for ( int c=0 ; c<20 ; ++c ) {
+                if ( row[ c ] == 64 && c != maxPoint.x && r != maxPoint.y ) {
+                    floodFill( shrunkenCell , Point( c , r ) , CV_RGB( 0 , 0 , 0 ) );
+                }
+            }
+        }
+        
+        //then we will try to center the digit
+        //first, find the boundaries of the white pixels
+        int leftX = maxPoint.x;
+        int rightX = maxPoint.x;
+        int topY = maxPoint.y;
+        int bottomY = maxPoint.y;
+        getWhiteBoundaries( shrunkenCell , leftX , rightX , topY , bottomY );
+        
+        int width = rightX - leftX + 1;
+        int height = bottomY - topY + 1;
+        Mat isolatedDigit = shrunkenCell( Rect( leftX , topY , width , height ) );
+        _disp.showImage( "Isolated Digit" , isolatedDigit );
+        
+        Mat paddedDigit = Mat::zeros( 28 , 28 , CV_8UC1 );
+        Rect copyLoc( (28-width)/2 , (28-height)/2 , width , height );
+        isolatedDigit.copyTo( paddedDigit(copyLoc) );
+        _disp.showImage( "Padded Digit" , paddedDigit );
+        
+        
+        Mat reshapedDigit = Mat( 1 , 28*28 , CV_32F );
+        for ( int r=0 ; r<28 ; ++r ) {
+            for ( int c=0 ; c<28 ; ++c ) {
+                reshapedDigit.at<float>( 0 , r*28 + c ) =
+                static_cast<float>( paddedDigit.at<uchar>( r , c ) ) / 255.0f;
+            }
+        }
+        return _digitRecognizer.predict( reshapedDigit );
+    }
+    
 public:
     
     PuzzleReader( const Mat& puzzle , const DigitRecognizer& digitRecognizer ) :
         _puzzle( puzzle )
         , _digitRecognizer( digitRecognizer ) {
-        
+        _disp.disable();
     }
     
     void getDigits( vector<vector<int>>& digits ) {
@@ -51,35 +173,31 @@ public:
         int cellSideLength = ceil(static_cast<double>(invertedPuzzle.size().width)/9.0);
         Mat currentCell = Mat( cellSideLength , cellSideLength , CV_8UC1 );
         
-        uchar* ptr = currentCell.ptr( 0 );
-        for ( int r=0 ; r<cellSideLength ; ++r ) {
-            for ( int c=0 ; c<cellSideLength ; ++c ) {
-                ptr[ r*cellSideLength + c ] = invertedPuzzle.at<uchar>( r , 5*cellSideLength+c );
+        for ( int row=0 ; row<9 ; ++row ) {
+            uchar* ptr = currentCell.ptr( 0 );
+            for( int col=0 ; col<9 ; ++col ) {
+                for ( int r=0 ; r<cellSideLength ; ++r ) {
+                    for ( int c=0 ; c<cellSideLength ; ++c ) {
+                        ptr[ r*cellSideLength + c ] =
+                            invertedPuzzle.at<uchar>( row*cellSideLength + r , col*cellSideLength + c );
+                    }
+                }
+                int digit = getDigit( currentCell );
+                digits[ row ][ col ] = digit;
             }
         }
         
-        Mat resizedCell = Mat( 28 , 28 , CV_8UC1 );
-        int borderSize = 3;
-        cv::resize( currentCell , resizedCell , resizedCell.size() );
-        for ( int r=0 ; r<28 ; ++r ) {
-            for ( int c=0 ; c<28 ; ++c ) {
-                if ( r < borderSize || c < borderSize || r > 28 - borderSize || c > 28 - borderSize ) {
-                    resizedCell.at<uchar>( r , c ) = 0;
+        for ( int i=0 ; i<digits.size() ; ++i ) {
+            for ( int j=0 ; j<digits[ i ].size() ; ++j ) {
+                if ( digits[ i ][ j ] != -1 ) {
+                    cout << digits[ i ][ j ] << " ";
+                }
+                else {
+                    cout << "?" << " ";
                 }
             }
+            cout << endl;
         }
-        _disp.showImage( "Cell (0,0)" , resizedCell );
-        
-        Mat reshapedCell = Mat( 1 , 28*28 , CV_32F );
-        for ( int r=0 ; r<28 ; ++r ) {
-            for ( int c=0 ; c<28 ; ++c ) {
-                reshapedCell.at<float>( 0 , r*28+c ) = static_cast<float>(resizedCell.at<uchar>(r , c)) / 255.0f;
-            }
-        }
-        
-        //cout << reshapedCell << endl;
-        
-        cout << _digitRecognizer.predict( reshapedCell ) << endl;
     }
     
 };

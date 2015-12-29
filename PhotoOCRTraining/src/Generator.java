@@ -78,8 +78,8 @@ public class Generator extends JFrame {
 			backgroundColor = getRandomColor();
 			fontColor = getRandomColor();
 		}
-		this.pnlDigit.setBackgroundColor( backgroundColor );
-		this.pnlDigit.setFontColor( fontColor );
+		this.pnlDigit.setBackgroundColor( Color.BLACK );
+		this.pnlDigit.setFontColor( Color.WHITE );
 		this.pnlDigit.setFont( FontManager.getRandomFont( true , 12 , 24 ) );
 		this.pnlDigit.setDigit( digit );
 		
@@ -237,7 +237,7 @@ public class Generator extends JFrame {
 			g.setFont( this.getFont() );
 			
 			drawString( this.toDisplay , g );
-			addNoiseToImage();
+			//addNoiseToImage();
 			
 			g = (Graphics2D) graphics;
 			g.drawImage( this.img , 0 , 0 , null );
