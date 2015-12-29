@@ -83,6 +83,7 @@
 		BA40FBE61C2DE57A00474451 /* DigitRecognizer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DigitRecognizer.h; sourceTree = "<group>"; };
 		BAA154361C2F14AA005FEE3E /* nndata.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = nndata.xml; sourceTree = "<group>"; };
 		BAA154371C2F1709005FEE3E /* PuzzleReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PuzzleReader.h; sourceTree = "<group>"; };
+		BAA7B1EA1C3339290087E633 /* Solver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Solver.h; sourceTree = "<group>"; };
 		BAC7E8D61C3229CD00A7A883 /* 0 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 0; sourceTree = "<group>"; };
 		BAC7E8D71C3229CD00A7A883 /* 0-tiles.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "0-tiles.png"; sourceTree = "<group>"; };
 		BAC7E8D91C3229CD00A7A883 /* 1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 1; sourceTree = "<group>"; };
@@ -495,6 +496,7 @@
 			isa = PBXGroup;
 			children = (
 				BAF96F0C1C1CCE7E005FA0CF /* main.cpp */,
+				BAA7B1EA1C3339290087E633 /* Solver.h */,
 				BAF970061C1CF0FD005FA0CF /* PuzzleExtractor.h */,
 				BAA154371C2F1709005FEE3E /* PuzzleReader.h */,
 				BA40FBDB1C2DC75A00474451 /* Utils.h */,

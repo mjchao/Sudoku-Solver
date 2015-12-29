@@ -20,13 +20,14 @@ using std::string;
 #include "PuzzleExtractor.h"
 #include "DigitRecognizer.h"
 #include "PuzzleReader.h"
+#include "Solver.h"
 
 #include "opencv2/core/core.hpp"
 using cv::Mat;
 using cv::imshow;
 
 //REMINDER: Puzzle3 is PNG not JPG
-#define SUDOKU_PUZZLE_FILE "/Users/mjchao/Desktop/Sudoku-Solver/puzzle3.png"
+#define SUDOKU_PUZZLE_FILE "/Users/mjchao/Desktop/Sudoku-Solver/puzzle.jpg"
 
 //DIGIT dataset refers to MNIST dataset which seems too clean and doesn't
 //generalize well to printed characters
@@ -67,7 +68,7 @@ int main(int argc, const char * argv[]) {
     
     PuzzleReader reader( isolatedPuzzle , digitRecognizer );
     vector<vector<int>> digits;
-    reader.getDigits( digits , true );
+    reader.getDigits( digits , false );
     //*/
     
     /*
@@ -85,6 +86,39 @@ int main(int argc, const char * argv[]) {
     }
     imshow( "Test" , test );
     waitKey( 0 );*/
+    
+    vector<vector<int>> unsolvedPuzzle = digits;
+    
+    cout << "Original puzzle: " << endl;
+    for ( int i=0 ; i<9 ; ++i ) {
+        for ( int j=0 ; j<9 ; ++j ) {
+            if ( unsolvedPuzzle[ i ][ j ] != -1 ) {
+                cout << unsolvedPuzzle[ i ][ j ] << " ";
+            }
+            else {
+                cout << "?" << " ";
+            }
+        }
+        cout << endl;
+    }
+    
+    cout << endl;
+    Solver solver;
+    cout << "Solver status: " << solver.solve( unsolvedPuzzle ) << endl;
+    cout << endl;
+    
+    cout << "Solved puzzle: " << endl;
+    for ( int i=0 ; i<9 ; ++i ) {
+        for ( int j=0 ; j<9 ; ++j ) {
+            if ( unsolvedPuzzle[ i ][ j ] != -1 ) {
+                cout << unsolvedPuzzle[ i ][ j ] << " ";
+            }
+            else {
+                cout << "?" << " ";
+            }
+        }
+        cout << endl;
+    }
     return 0;
 }
 

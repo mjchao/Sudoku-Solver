@@ -195,18 +195,6 @@ public:
                 digits[ row ][ col ] = digit;
             }
         }
-        
-        for ( int i=0 ; i<digits.size() ; ++i ) {
-            for ( int j=0 ; j<digits[ i ].size() ; ++j ) {
-                if ( digits[ i ][ j ] != -1 ) {
-                    cout << digits[ i ][ j ] << " ";
-                }
-                else {
-                    cout << "?" << " ";
-                }
-            }
-            cout << endl;
-        }
     }
     
 };
