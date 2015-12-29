@@ -31,7 +31,8 @@ using cv::Mat;
 #define DIGIT_TEST_LABEL_FILE "/Users/mjchao/Desktop/Sudoku-Solver/digits/t10k-labels.idx1-ubyte"
 #define DIGIT_NN_DATA_FILE "/Users/mjchao/Desktop/Sudoku-Solver/digits/nndata.xml"
 
-#define DIGIT_TRAIN_DIRECTORY "/Users/mjchao/Desktop/Sudoku-Solver/PhotoOCRTraining"
+#define DIGIT_TRAIN_DIRECTORY "/Users/mjchao/Desktop/Sudoku-Solver/PhotoOCRTraining/train"
+#define DIGIT_TEST_DIRECTORY "/Users/mjchao/Desktop/Sudoku-Solver/PhotoOCRTraining/test"
 
 int main(int argc, const char * argv[]) {
     
@@ -49,13 +50,13 @@ int main(int argc, const char * argv[]) {
     DigitRecognizer digitRecognizer;
     
     
-    digitRecognizer.train( DIGIT_TRAIN_DIRECTORY );
-    //digitRecognizer.test( DIGIT_TEST_DATA_FILE , DIGIT_TEST_LABEL_FILE );
+    //digitRecognizer.train( DIGIT_TRAIN_DIRECTORY );
+    //digitRecognizer.test( DIGIT_TEST_DIRECTORY );
     //digitRecognizer.save( DIGIT_NN_DATA_FILE );
     //*/
     
-    //digitRecognizer.load( DIGIT_NN_DATA_FILE );
-    //digitRecognizer.test( DIGIT_TEST_DATA_FILE , DIGIT_TEST_LABEL_FILE );
+    digitRecognizer.load( DIGIT_NN_DATA_FILE );
+    digitRecognizer.test( DIGIT_TEST_DIRECTORY );
     //*/
     
     /*

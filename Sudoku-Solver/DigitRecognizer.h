@@ -128,7 +128,7 @@ private:
         
         for ( int digit=0 ; digit<=9 ; ++digit ) {
             ostringstream filename;
-            filename << trainDirectory << digit << "/" << digit;
+            filename << trainDirectory << "/" << digit << "/" << digit;
             ifstream ifs;
             ifs.open( filename.str() );
             for ( int sampleIdx=0 ; sampleIdx<2500 ; ++sampleIdx ) {
@@ -143,38 +143,19 @@ private:
     /**
      * Reads in the test data for the digit classifier
      */
-    void readTestData( const string& testImageFile , const string& testLabelFile ) {
-        ifstream ifs;
-        ifs.open( testImageFile );
+    void readTestData( const string& testDirectory ) {
+        _testData.reserve( 25000 );
         
-        int magicNumber;
-        readInt( ifs , magicNumber );
-        
-        int numImages;
-        readInt( ifs , numImages );
-        
-        int numRows;
-        readInt( ifs , numRows );
-        
-        int numCols;
-        readInt( ifs , numCols );
-        
-        _testData.reserve( numImages );
-        for ( int i=0 ; i<numImages ; ++i ) {
-            _testData.push_back( TrainingDatum( numRows , numCols , 10 ) );
-            readImage( ifs , numRows , numCols , _testData[ i ] );
-        }
-        
-        ifs.close();
-        
-        ifs.open( testLabelFile );
-        
-        readInt( ifs , magicNumber );
-        readInt( ifs , numImages );
-
-        for ( int i=0 ; i<numImages ; ++i ) {
-            //FIXME
-            //readLabel( ifs , _testData[ i ] );
+        for ( int digit=0 ; digit<=9 ; ++digit ) {
+            ostringstream filename;
+            filename << testDirectory << "/" << digit << "/" << digit;
+            ifstream ifs;
+            ifs.open( filename.str() );
+            for ( int sampleIdx=0 ; sampleIdx<2500 ; ++sampleIdx ) {
+                _testData.push_back( TrainingDatum( 28 , 28 , 10 ) );
+                readImage( ifs , 28 , 28 , _testData.back() );
+                setLabel( _testData.back() , digit );
+            }
         }
     }
     
@@ -234,8 +215,8 @@ public:
 
     }
     
-    void test( const string& testImageFile , const string& testLabelFile ) {
-        readTestData( testImageFile , testLabelFile );
+    void test( const string& testDirectory ) {
+        readTestData( testDirectory );
         
         int correct = 0;
         int total = 0;
