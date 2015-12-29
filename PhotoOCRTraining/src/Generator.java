@@ -4,10 +4,8 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
 
@@ -143,8 +141,7 @@ public class Generator extends JFrame {
 	}
 	
 	public void saveTrainingImageData( int digit , int imgIdx , BufferedImage toSave ) throws IOException {
-		String filename = "train/" + digit + "/" + imgIdx;
-		PrintWriter out = new PrintWriter( new BufferedWriter( new FileWriter( filename ) ) );
+		byte[] data = new byte[ 28*28 ];
 		for ( int y=0 ; y<28 ; ++y ) {
 			for ( int x=0 ; x<28 ; ++x ) {
 				int color = toSave.getRGB( x , y );
@@ -152,8 +149,16 @@ public class Generator extends JFrame {
 				int green = (color & 0x0000ff00) >> 8;
 				int blue = (color & 0x000000ff) >> 0;
 				int average = (red + green + blue)/3;
-				out.println( 255 - average );
+				data[ y*28+x ] = (byte)(average);
 			}
+		}
+		String filename = "train/" + digit + "/" + digit;
+		FileOutputStream out = new FileOutputStream( filename , true );
+		try {
+			out.write( data );
+		}
+		catch ( IOException e ) {
+			//ignore
 		}
 		out.close();
 	}
