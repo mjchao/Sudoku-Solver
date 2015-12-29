@@ -212,6 +212,21 @@ public:
             cout << "Training failed" << endl;
             exit( 1 );
         }
+        
+        int correct = 0;
+        int total = 0;
+        for ( int i=0 ; i<_trainingData.size() ; ++i ) {
+            Mat trainData = Mat( 1 , numFeatures , CV_32F );
+            _trainingData[ i ].image.copyTo( trainData.row( 0 ) );
+            int prediction = predict( trainData );
+            int actual = static_cast<int>( _trainingData[ i ].numericLabel );
+            ++total;
+            if ( actual == prediction ) {
+                ++correct;
+            }
+        }
+        
+        cout << "Training set accuracy: " << (1.0*correct/total) << endl;
 
     }
     
@@ -228,9 +243,9 @@ public:
             
             int prediction = predict( testData );
             int actual = static_cast<int>( _testData[ i ].numericLabel );
-            cout << "Prediction for " << i << ": " << _neuralNetwork->predict( testData ) << endl;
+            //cout << "Prediction for " << i << ": " << _neuralNetwork->predict( testData ) << endl;
             
-            cout << "Actual for " << i << ": " << actual << endl;
+            //cout << "Actual for " << i << ": " << actual << endl;
             ++total;
             if ( actual == prediction ) {
                 ++correct;
