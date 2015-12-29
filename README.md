@@ -8,5 +8,7 @@ The goal is to take an image like this:
 
 and output a solution.
 
+#Process
+In this project, I first followed the AI Shack tutorial for extracting an undistorted puzzle from an arbitrary image. Next, I attempted to train a neural network for classifying images of digits. The MNIST dataset for handwritten digits didn't seem to work - perhaps the handwritten digits weren't similar enough to the print digits. So, I wrote a separate progrma to generated the training and test data. As of right now, the program has difficulty dealing with slight distortions such as slightly-curled-up paper and recognizing digits written in a thin font.
 
 
