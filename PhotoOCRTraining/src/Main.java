@@ -18,8 +18,8 @@ public class Main {
 		//set to the number of training samples for each digit
 		//make sure that rows*cols = numToGenerate or else
 		//this will not work
-		int numToGenerate = 2500;
-		int rows = 50;
+		int numToGenerate = 25000;
+		int rows = 500;
 		int cols = 50;
 		
 		for ( int digit = 0 ; digit<=9 ; ++digit ) {
