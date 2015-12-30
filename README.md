@@ -6,7 +6,10 @@ The goal is to take an image like this:
 ![Sudoku Puzzle] 
 (https://raw.githubusercontent.com/mjchao/Sudoku-Solver/master/puzzle.jpg)
 
-and output a solution.
+and output a solution like this:
+
+![Sudoku Solution]
+(https://raw.githubusercontent.com/mjchao/Sudoku-Solver/master/solution.jpg)
 
 #Process
 In this project, I first followed the AI Shack tutorial for extracting an undistorted puzzle from an arbitrary image. Next, I attempted to train a neural network for classifying images of digits. The MNIST dataset for handwritten digits didn't seem to work - perhaps the handwritten digits weren't similar enough to the print digits. I then wrote a separate program to generated the training and test data using all the fonts on my computer. The neural network worked for the most part, but not as smoothly as I would have liked. The NN used all pixels in the 28x28 training images as features. The training data overlayed white digits at the center of a black background. The NN could not classify digits with extraneous white pixels on the borders and so I had to implement several more ad-hoc heuristics to extract the digits from the Sudoku cells, overlay them on a black background, and then ask the NN to classify the isolated digits. This ended up succeeding.
