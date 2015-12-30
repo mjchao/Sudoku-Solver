@@ -21,6 +21,7 @@ using std::string;
 #include "DigitRecognizer.h"
 #include "PuzzleReader.h"
 #include "Solver.h"
+#include "PuzzleCompleter.h"
 
 #include "opencv2/core/core.hpp"
 using cv::Mat;
@@ -28,6 +29,7 @@ using cv::imshow;
 
 //REMINDER: Puzzle3 is PNG not JPG
 #define SUDOKU_PUZZLE_FILE "/Users/mjchao/Desktop/Sudoku-Solver/puzzle.jpg"
+#define SUDOKU_SOLUTION_FILE "/Users/mjchao/Desktop/Sudoku-Solver/solution.jpg"
 
 //DIGIT dataset refers to MNIST dataset which seems too clean and doesn't
 //generalize well to printed characters
@@ -63,7 +65,7 @@ int main(int argc, const char * argv[]) {
     //*/
     
     digitRecognizer.load( DIGIT2_NN_DATA_FILE );
-    digitRecognizer.test( DIGIT2_TEST_DIRECTORY );
+    //digitRecognizer.test( DIGIT2_TEST_DIRECTORY );
     //*/
     
     PuzzleReader reader( isolatedPuzzle , digitRecognizer );
@@ -87,13 +89,13 @@ int main(int argc, const char * argv[]) {
     imshow( "Test" , test );
     waitKey( 0 );*/
     
-    vector<vector<int>> unsolvedPuzzle = digits;
+    vector<vector<int>> solvedPuzzle = digits;
     
     cout << "Original puzzle: " << endl;
     for ( int i=0 ; i<9 ; ++i ) {
         for ( int j=0 ; j<9 ; ++j ) {
-            if ( unsolvedPuzzle[ i ][ j ] != -1 ) {
-                cout << unsolvedPuzzle[ i ][ j ] << " ";
+            if ( solvedPuzzle[ i ][ j ] != -1 ) {
+                cout << solvedPuzzle[ i ][ j ] << " ";
             }
             else {
                 cout << "?" << " ";
@@ -104,14 +106,14 @@ int main(int argc, const char * argv[]) {
     
     cout << endl;
     Solver solver;
-    cout << "Solver status: " << solver.solve( unsolvedPuzzle ) << endl;
+    cout << "Solver status: " << solver.solve( solvedPuzzle ) << endl;
     cout << endl;
     
     cout << "Solved puzzle: " << endl;
     for ( int i=0 ; i<9 ; ++i ) {
         for ( int j=0 ; j<9 ; ++j ) {
-            if ( unsolvedPuzzle[ i ][ j ] != -1 ) {
-                cout << unsolvedPuzzle[ i ][ j ] << " ";
+            if ( solvedPuzzle[ i ][ j ] != -1 ) {
+                cout << solvedPuzzle[ i ][ j ] << " ";
             }
             else {
                 cout << "?" << " ";
@@ -119,6 +121,15 @@ int main(int argc, const char * argv[]) {
         }
         cout << endl;
     }
+    
+    PuzzleCompleter completer;
+    Mat solution = isolatedPuzzle;
+    cvtColor( solution , solution , CV_GRAY2RGB );
+    completer.complete( solution , digits , solvedPuzzle );
+    
+    imshow( "Solution" , solution );
+    waitKey( 0 );
+    imwrite( SUDOKU_SOLUTION_FILE , solution );
     return 0;
 }
 

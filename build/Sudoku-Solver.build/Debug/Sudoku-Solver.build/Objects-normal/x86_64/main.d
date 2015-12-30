@@ -55,4 +55,5 @@ dependencies: /Users/mjchao/Desktop/Sudoku-Solver/Sudoku-Solver/main.cpp \
   /Users/mjchao/Desktop/Sudoku-Solver/Sudoku-Solver/DigitRecognizer.h \
   /usr/local/include/opencv2/ml/ml.hpp \
   /Users/mjchao/Desktop/Sudoku-Solver/Sudoku-Solver/PuzzleReader.h \
-  /Users/mjchao/Desktop/Sudoku-Solver/Sudoku-Solver/Solver.h
+  /Users/mjchao/Desktop/Sudoku-Solver/Sudoku-Solver/Solver.h \
+  /Users/mjchao/Desktop/Sudoku-Solver/Sudoku-Solver/PuzzleCompleter.h

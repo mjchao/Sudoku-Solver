@@ -84,6 +84,8 @@
 		BAA154361C2F14AA005FEE3E /* nndata.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = nndata.xml; sourceTree = "<group>"; };
 		BAA154371C2F1709005FEE3E /* PuzzleReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PuzzleReader.h; sourceTree = "<group>"; };
 		BAA7B1EA1C3339290087E633 /* Solver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Solver.h; sourceTree = "<group>"; };
+		BAA7B1EB1C334F0A0087E633 /* PuzzleCompleter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PuzzleCompleter.h; sourceTree = "<group>"; };
+		BAA7B1EC1C33688A0087E633 /* solution.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = solution.jpg; sourceTree = "<group>"; };
 		BAC7E8D61C3229CD00A7A883 /* 0 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 0; sourceTree = "<group>"; };
 		BAC7E8D71C3229CD00A7A883 /* 0-tiles.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "0-tiles.png"; sourceTree = "<group>"; };
 		BAC7E8D91C3229CD00A7A883 /* 1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 1; sourceTree = "<group>"; };
@@ -472,6 +474,7 @@
 		BAF96F001C1CCE7D005FA0CF = {
 			isa = PBXGroup;
 			children = (
+				BAA7B1EC1C33688A0087E633 /* solution.jpg */,
 				BAC7E8D41C3229CD00A7A883 /* test */,
 				BAC7E8F31C3229CD00A7A883 /* train */,
 				BA40FBE11C2DE4AE00474451 /* digits */,
@@ -496,6 +499,7 @@
 			isa = PBXGroup;
 			children = (
 				BAF96F0C1C1CCE7E005FA0CF /* main.cpp */,
+				BAA7B1EB1C334F0A0087E633 /* PuzzleCompleter.h */,
 				BAA7B1EA1C3339290087E633 /* Solver.h */,
 				BAF970061C1CF0FD005FA0CF /* PuzzleExtractor.h */,
 				BAA154371C2F1709005FEE3E /* PuzzleReader.h */,
