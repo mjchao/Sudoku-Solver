@@ -37,6 +37,7 @@ Here is an example of a puzzle that failed:
 
 The program found a solution to a puzzle, but it thought the 9 in the first row was a blank square. Thus, it did not solve the correct puzzle. It also misread a 2 as an 8, so there are 2 2s in the third row. There are also some other errors. In all, the program thought this was the puzzle:
 
+<pre>
 ? 3 ? 1 ? ? ? ? ? 
 4 ? 8 ? 6 ? ? ? 2 
 8 ? ? 5 8 ? 7 ? ? 
@@ -46,3 +47,4 @@ The program found a solution to a puzzle, but it thought the 9 in the first row 
 ? ? ? ? 0 ? ? 3 ? 
 ? 4 ? 5 ? ? ? ? 8 
 ? ? ? ? ? ? 4 ? ? 
+</pre>
