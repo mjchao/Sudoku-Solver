@@ -12,6 +12,8 @@ and output a solution like this:
 ![Sudoku Solution]
 (https://raw.githubusercontent.com/mjchao/Sudoku-Solver/master/solution.jpg)
 
+The program is currently capable of doing this for the specific puzzle shown above.
+
 #Process
 In this project, I first followed the AI Shack tutorial for extracting an undistorted puzzle from an arbitrary image. For example, I started with the initial picture
 
