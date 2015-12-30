@@ -16,6 +16,6 @@ In this project, I first followed the AI Shack tutorial for extracting an undist
 
 As of right now, the program has difficulty dealing with slightly-curled-up paper and recognizing digits written in a thin font. Curled up paper causes cells to get unaligned in the undistorted puzzle image and throws off the heursitics for extracting the digits. The extracted digits tend to get thrown off the center and the digit-isolation heursitic sometimes mistakes the gridlines as the digits. The thin fonts are a problem because the digit-isolation heuristic assumes that the biggest white blob in an image is the digit. Sometimes, digits written in a thin font become disconnected when the image is shrunk to 28x28 so that the NN can classify it. To deal with the thin fonts, one would have to toggle on an option to dilate the image to make the font thicker.
 
-Currently, the program can recognize all the digits in the puzzle shown above.
+Currently, the program can recognize all the digits in the puzzle shown above and solve it successfully. It may not generalize well to other puzzles.
 
 
