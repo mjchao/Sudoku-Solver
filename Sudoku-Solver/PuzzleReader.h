@@ -60,20 +60,11 @@ private:
         Mat shrunkenCell = Mat( 20 , 20 , CV_8UC1 );
         cv::resize( cell , shrunkenCell , shrunkenCell.size() );
         
-        int borderSize = 4;
+        int borderSize = 0;
         //then turn everything into black and white
         for ( int r=0 ; r<20 ; ++r ) {
             for ( int c=0 ; c<20 ; ++c ) {
-                
-                //don't penalize the top edge because it tends to
-                //be accurate - but the left, right, and bottom edges
-                //tend to have extraneous gridlines
-                if ( r+borderSize < 0 || r > 20-borderSize || c < borderSize || c > 20 - borderSize ) {
-                    shrunkenCell.at<uchar>( r , c ) = 0;
-                }
-                else {
-                    shrunkenCell.at<uchar>( r , c ) = shrunkenCell.at<uchar>( r , c ) >= 128 ? 255 : 0;
-                }
+                shrunkenCell.at<uchar>( r , c ) = shrunkenCell.at<uchar>( r , c ) >= 128 ? 255 : 0;
             }
         }
         
@@ -177,7 +168,19 @@ public:
             dilate( invertedPuzzle , invertedPuzzle , kernel );
         }
         
+        //floodfill all the edges to black
+        for ( int row=0 ; row<invertedPuzzle.rows ; ++row ) {
+            floodFill( invertedPuzzle , Point( 0 , row ) , cvScalar(0,0,0) );
+            floodFill( invertedPuzzle , Point( invertedPuzzle.cols-1 , row ) , cvScalar(0,0,0) );
+        }
+        for ( int col=0 ; col<invertedPuzzle.cols ; ++col ) {
+            floodFill( invertedPuzzle , Point( col , 0 ) , cvScalar(0,0,0) );
+            floodFill( invertedPuzzle , Point( col , invertedPuzzle.rows-1 ) , cvScalar(0,0,0) );
+        }
+        
+        _disp.enable();
         _disp.showImage( "Inverted Puzzle" , invertedPuzzle );
+        _disp.disable();
         
         int cellSideLength = ceil(static_cast<double>(invertedPuzzle.size().width)/9.0);
         Mat currentCell = Mat( cellSideLength , cellSideLength , CV_8UC1 );
