@@ -24,6 +24,10 @@ opencv2/core/core.hpp
 opencv2/ml/ml.hpp
 /Users/mjchao/Desktop/Sudoku-Solver/Sudoku-Solver/opencv2/ml/ml.hpp
 
+/Users/mjchao/Desktop/Sudoku-Solver/Sudoku-Solver/PuzzleCompleter.h
+opencv2/core/core.hpp
+/Users/mjchao/Desktop/Sudoku-Solver/Sudoku-Solver/opencv2/core/core.hpp
+
 /Users/mjchao/Desktop/Sudoku-Solver/Sudoku-Solver/PuzzleExtractor.h
 iostream
 -
@@ -46,6 +50,8 @@ Utils.h
 opencv2/core/core.hpp
 /Users/mjchao/Desktop/Sudoku-Solver/Sudoku-Solver/opencv2/core/core.hpp
 
+/Users/mjchao/Desktop/Sudoku-Solver/Sudoku-Solver/Solver.h
+
 /Users/mjchao/Desktop/Sudoku-Solver/Sudoku-Solver/Utils.h
 string
 -
@@ -67,6 +73,10 @@ DigitRecognizer.h
 /Users/mjchao/Desktop/Sudoku-Solver/Sudoku-Solver/DigitRecognizer.h
 PuzzleReader.h
 /Users/mjchao/Desktop/Sudoku-Solver/Sudoku-Solver/PuzzleReader.h
+Solver.h
+/Users/mjchao/Desktop/Sudoku-Solver/Sudoku-Solver/Solver.h
+PuzzleCompleter.h
+/Users/mjchao/Desktop/Sudoku-Solver/Sudoku-Solver/PuzzleCompleter.h
 opencv2/core/core.hpp
 /Users/mjchao/Desktop/Sudoku-Solver/Sudoku-Solver/opencv2/core/core.hpp
 
