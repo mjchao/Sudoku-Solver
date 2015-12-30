@@ -82,15 +82,14 @@ private:
             _disp.disable();
         }//*/
         
-        //only keep the biggest blob of white - everything else should be
-        //noise and turned to black
+        //find the biggest blob of white, which we will assume is the digit
         int maxArea = -1;
         Point maxPoint;
         for ( int r=0 ; r<20 ; ++r ) {
             uchar* row = shrunkenCell.ptr( r );
             for ( int c=0 ; c<20 ; ++c ) {
                 if ( row[ c ] == 255 ) {
-                    int area = floodFill( shrunkenCell , Point( c , r ) , CV_RGB( 0 , 0 , 64 ) );
+                    int area = floodFill( shrunkenCell , Point( c , r ) , CV_RGB( 255 , 255 , 255 ) );
                     if ( area > maxArea ) {
                         maxArea = area;
                         maxPoint = Point( c , r );
@@ -98,9 +97,6 @@ private:
                 }
             }
         }
-        
-        //keep biggest white area
-        floodFill( shrunkenCell , maxPoint , CV_RGB( 255 , 255 , 255 ) );
         
         /*
         //keep all other areas black
@@ -130,11 +126,11 @@ private:
         Rect copyLoc( (28-width)/2 , (28-height)/2 , width , height );
         isolatedDigit.copyTo( paddedDigit(copyLoc) );
         
-        /*
+        
         _disp.enable();
         _disp.showImage( "Padded digit" , paddedDigit );
         _disp.disable();
-        */
+        
          
         Mat reshapedDigit = Mat( 1 , 28*28 , CV_32F );
         for ( int r=0 ; r<28 ; ++r ) {
