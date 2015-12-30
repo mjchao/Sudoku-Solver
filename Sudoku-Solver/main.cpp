@@ -75,7 +75,7 @@ int main(int argc, const char * argv[]) {
     
     digitRecognizer.train( DIGIT2_TRAIN_DIRECTORY );
     digitRecognizer.test( DIGIT2_TEST_DIRECTORY );
-    //digitRecognizer.save( DIGIT2_NN_DATA_FILE );
+    digitRecognizer.save( DIGIT2_NN_DATA_FILE );
     //*/
     
     //digitRecognizer.load( DIGIT2_NN_DATA_FILE );
