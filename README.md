@@ -27,4 +27,4 @@ As of right now, the program has difficulty dealing with slightly-curled-up pape
 
 Once the digits were extracted, it was a simple task to write a recursive backtracking algorithm to find a solution. The only problem is that if the digits were read incorrectly, the solution would be incorrect or would never be found. Currently, the program can recognize all the digits in the puzzle shown above and solve it successfully. It currently does not generalize well to other puzzles. For most puzzles, it misclassifies a few digits and if we don't correctly read the puzzle, we won't be able to solve it.
 
-
+Here is an example of a puzzle that failed:
