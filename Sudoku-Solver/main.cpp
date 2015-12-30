@@ -49,6 +49,7 @@ using cv::imshow;
 
 int main(int argc, const char * argv[]) {
     
+    /*
     Mat puzzle;
     puzzle = imread( SUDOKU_PUZZLE_FILE , 0 );
     
@@ -82,11 +83,11 @@ int main(int argc, const char * argv[]) {
     //*/
     
     return 0;
-    
+    /*
     PuzzleReader reader( isolatedPuzzle , digitRecognizer );
     vector<vector<int>> digits;
     reader.getDigits( digits , true );
-    //*/
+    //
     
     vector<vector<int>> solvedPuzzle = digits;
     
@@ -129,7 +130,7 @@ int main(int argc, const char * argv[]) {
     imshow( "Solution" , solution );
     waitKey( 0 );
     imwrite( SUDOKU_SOLUTION_FILE , solution );
-    return 0;
+    return 0;*/
 }
 
 

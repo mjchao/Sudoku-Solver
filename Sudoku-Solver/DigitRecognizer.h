@@ -121,7 +121,6 @@ private:
      * Reads in the training data for the digit classifier
      */
     void readTrainingData( const string& trainDirectory ) {
-        
         for ( int digit=0 ; digit<=9 ; ++digit ) {
             ostringstream filename;
             filename << trainDirectory << "/" << digit << "/" << digit;
@@ -129,6 +128,7 @@ private:
             ifs.open( filename.str() );
             int numSamples;
             readInt( ifs , numSamples );
+            cout << numSamples << endl;
             for ( int sampleIdx=0 ; sampleIdx<numSamples ; ++sampleIdx ) {
                 _trainingData.push_back( TrainingDatum( 28 , 28 , 10 ) );
                 readImage( ifs , 28 , 28 , _trainingData.back() );

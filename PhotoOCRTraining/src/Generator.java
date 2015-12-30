@@ -108,7 +108,7 @@ public class Generator extends JFrame {
 	 * @param rows
 	 * @param cols
 	 */
-	public BufferedImage generateN( int digit , int n , int rows , int cols , String saveDir ) {
+	public BufferedImage generateN( int digit , int n , int rows , int cols , FileOutputStream out ) {
 		BufferedImage rtn = new BufferedImage( cols*28 , rows*28 , BufferedImage.TYPE_BYTE_GRAY );
 		Graphics2D g = rtn.createGraphics();
 		for ( int i=0 ; i<n ; ++i ) {
@@ -131,7 +131,7 @@ public class Generator extends JFrame {
 			}
 			
 			try {
-				saveTrainingImageData( digit , i , toStitch , saveDir );
+				saveTrainingImageData( digit , i , toStitch , out );
 			}
 			catch ( IOException e ) {
 				System.out.println( "Failed to save training data." );
@@ -140,7 +140,7 @@ public class Generator extends JFrame {
 		return rtn;
 	}
 	
-	public void saveTrainingImageData( int digit , int imgIdx , BufferedImage toSave , String saveDir ) throws IOException {
+	public void saveTrainingImageData( int digit , int imgIdx , BufferedImage toSave , FileOutputStream out ) throws IOException {
 		byte[] data = new byte[ 28*28 ];
 		for ( int y=0 ; y<28 ; ++y ) {
 			for ( int x=0 ; x<28 ; ++x ) {
@@ -152,15 +152,12 @@ public class Generator extends JFrame {
 				data[ y*28+x ] = (byte)(average);
 			}
 		}
-		String filename = saveDir + "/" + digit + "/" + digit;
-		FileOutputStream out = new FileOutputStream( filename , true );
 		try {
 			out.write( data );
 		}
 		catch ( IOException e ) {
-			//ignore
+			e.printStackTrace();
 		}
-		out.close();
 	}
 	
 
