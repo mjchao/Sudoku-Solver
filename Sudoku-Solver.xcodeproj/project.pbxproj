@@ -86,6 +86,8 @@
 		BAA7B1EA1C3339290087E633 /* Solver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Solver.h; sourceTree = "<group>"; };
 		BAA7B1EB1C334F0A0087E633 /* PuzzleCompleter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PuzzleCompleter.h; sourceTree = "<group>"; };
 		BAA7B1EC1C33688A0087E633 /* solution.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = solution.jpg; sourceTree = "<group>"; };
+		BAA7B1EF1C336B750087E633 /* puzzle4.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = puzzle4.jpg; sourceTree = "<group>"; };
+		BAA7B1F01C336C0F0087E633 /* solution4.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = solution4.jpg; sourceTree = "<group>"; };
 		BAC7E8D61C3229CD00A7A883 /* 0 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 0; sourceTree = "<group>"; };
 		BAC7E8D71C3229CD00A7A883 /* 0-tiles.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "0-tiles.png"; sourceTree = "<group>"; };
 		BAC7E8D91C3229CD00A7A883 /* 1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 1; sourceTree = "<group>"; };
@@ -474,13 +476,15 @@
 		BAF96F001C1CCE7D005FA0CF = {
 			isa = PBXGroup;
 			children = (
+				BAA7B1F01C336C0F0087E633 /* solution4.jpg */,
 				BAA7B1EC1C33688A0087E633 /* solution.jpg */,
 				BAC7E8D41C3229CD00A7A883 /* test */,
 				BAC7E8F31C3229CD00A7A883 /* train */,
 				BA40FBE11C2DE4AE00474451 /* digits */,
+				BAF970051C1CE0CC005FA0CF /* puzzle.jpg */,
 				BA40FBD91C2DC2D400474451 /* puzzle2.jpg */,
 				BA40FBDA1C2DC2D400474451 /* puzzle3.png */,
-				BAF970051C1CE0CC005FA0CF /* puzzle.jpg */,
+				BAA7B1EF1C336B750087E633 /* puzzle4.jpg */,
 				BAF96F7E1C1CD243005FA0CF /* lib */,
 				BAF96F0B1C1CCE7E005FA0CF /* Sudoku-Solver */,
 				BAF96F0A1C1CCE7E005FA0CF /* Products */,

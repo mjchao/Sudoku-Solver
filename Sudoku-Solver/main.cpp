@@ -9,6 +9,7 @@
 #include <iostream>
 using std::cin;
 using std::cout;
+using std::cerr;
 using std::endl;
 
 #include <vector>
@@ -28,8 +29,8 @@ using cv::Mat;
 using cv::imshow;
 
 //REMINDER: Puzzle3 is PNG not JPG
-#define SUDOKU_PUZZLE_FILE "/Users/mjchao/Desktop/Sudoku-Solver/puzzle.jpg"
-#define SUDOKU_SOLUTION_FILE "/Users/mjchao/Desktop/Sudoku-Solver/solution.jpg"
+#define SUDOKU_PUZZLE_FILE "/Users/mjchao/Desktop/Sudoku-Solver/puzzle4.jpg"
+#define SUDOKU_SOLUTION_FILE "/Users/mjchao/Desktop/Sudoku-Solver/solution4.png"
 
 //DIGIT dataset refers to MNIST dataset which seems too clean and doesn't
 //generalize well to printed characters
@@ -50,9 +51,21 @@ int main(int argc, const char * argv[]) {
     
     Mat puzzle;
     puzzle = imread( SUDOKU_PUZZLE_FILE , 0 );
+    
+    if ( !puzzle.data ) {
+        cerr << "Invalid puzzle file." << endl;
+        exit( 1 );
+    }
+    
+    imshow( "Original Image" , puzzle );
+    waitKey( 0 );
+    
 
     PuzzleExtractor puzzleExtractor( puzzle );
     Mat isolatedPuzzle = puzzleExtractor.extractPuzzle();
+    
+    imshow( "Extracted Puzzle" , isolatedPuzzle );
+    waitKey( 0 );
     
     //*/
     
@@ -72,22 +85,6 @@ int main(int argc, const char * argv[]) {
     vector<vector<int>> digits;
     reader.getDigits( digits , false );
     //*/
-    
-    /*
-    Mat test = Mat( 28 , 28 , CV_8UC1 );
-    ifstream fin;
-    fin.open( "/Users/mjchao/Desktop/Sudoku-Solver/PhotoOCRTraining/test/0/0" );
-    for ( int i=0 ; i<2500 ; ++i ) {
-        for ( int i=0 ; i<28*28; ++i ) {
-            int row = i/28;
-            int col = i%28;
-            char data;
-            fin.get( data );
-            test.at<uchar>( row , col ) = static_cast<uchar>( data );
-        }
-    }
-    imshow( "Test" , test );
-    waitKey( 0 );*/
     
     vector<vector<int>> solvedPuzzle = digits;
     
