@@ -122,16 +122,14 @@ private:
      */
     void readTrainingData( const string& trainDirectory ) {
         
-        //we have generated 2500 training samples for each of the
-        //10 digits, for a total of 25000 training samples
-        _trainingData.reserve( 25000 );
-        
         for ( int digit=0 ; digit<=9 ; ++digit ) {
             ostringstream filename;
             filename << trainDirectory << "/" << digit << "/" << digit;
             ifstream ifs;
             ifs.open( filename.str() );
-            for ( int sampleIdx=0 ; sampleIdx<2500 ; ++sampleIdx ) {
+            int numSamples;
+            readInt( ifs , numSamples );
+            for ( int sampleIdx=0 ; sampleIdx<numSamples ; ++sampleIdx ) {
                 _trainingData.push_back( TrainingDatum( 28 , 28 , 10 ) );
                 readImage( ifs , 28 , 28 , _trainingData.back() );
                 setLabel( _trainingData.back() , digit );
@@ -144,14 +142,14 @@ private:
      * Reads in the test data for the digit classifier
      */
     void readTestData( const string& testDirectory ) {
-        _testData.reserve( 25000 );
-        
         for ( int digit=0 ; digit<=9 ; ++digit ) {
             ostringstream filename;
             filename << testDirectory << "/" << digit << "/" << digit;
             ifstream ifs;
             ifs.open( filename.str() );
-            for ( int sampleIdx=0 ; sampleIdx<2500 ; ++sampleIdx ) {
+            int numSamples;
+            readInt( ifs , numSamples );
+            for ( int sampleIdx=0 ; sampleIdx<numSamples ; ++sampleIdx ) {
                 _testData.push_back( TrainingDatum( 28 , 28 , 10 ) );
                 readImage( ifs , 28 , 28 , _testData.back() );
                 setLabel( _testData.back() , digit );
