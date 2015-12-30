@@ -23,7 +23,7 @@ and extracted the following undistorted puzzle:
 ![Undistorted puzzle]
 (https://raw.githubusercontent.com/mjchao/Sudoku-Solver/master/undistorted.jpg)
 
-All the work was done without a tutorial. 
+All the work after this was done without a tutorial. 
 
 ##Neural Network Training
 Next, I attempted to train a neural network for classifying images of digits. The MNIST dataset for handwritten digits didn't seem to work - perhaps the handwritten digits weren't similar enough to the print digits. I then wrote a separate program to generated the training and test data using all the fonts on my computer. This resulted in training sets like the one shown below:
