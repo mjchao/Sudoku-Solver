@@ -29,11 +29,11 @@ private:
     const DigitRecognizer& _digitRecognizer;
     ImageDisplay _disp;
     
-    int countWhitePixelsInCenter( const Mat& cell ) {
+    int countWhitePixels( const Mat& cell ) {
         int count = 0;
-        for ( int r=cell.size().height/2-2 ; r<cell.size().height/2+2 ; ++r ) {
-            for ( int c=cell.size().width/2-2 ; c<cell.size().width+2 ; ++c ) {
-                if ( static_cast<int>( cell.at<uchar>(r , c) ) == 255 ) {
+        for ( int row=0 ; row<cell.rows ; ++row ) {
+            for ( int col=0 ; col<cell.cols ; ++col ) {
+                if ( cell.at<uchar>(row , col) == static_cast<uchar>(255)) {
                     ++count;
                 }
             }
@@ -60,7 +60,6 @@ private:
         Mat shrunkenCell = Mat( 20 , 20 , CV_8UC1 );
         cv::resize( cell , shrunkenCell , shrunkenCell.size() );
         
-        int borderSize = 0;
         //then turn everything into black and white
         for ( int r=0 ; r<20 ; ++r ) {
             for ( int c=0 ; c<20 ; ++c ) {
@@ -68,11 +67,11 @@ private:
             }
         }
         
-        //if there aren't enough white pixels, assume it is an empty square
-        int whitePixels = countWhitePixelsInCenter( shrunkenCell );
-        if ( whitePixels < 8 ) {
+        int whitePixels = countWhitePixels( shrunkenCell );
+        if ( whitePixels < 10 ) {
             return -1;
         }
+        
         /*
         // DEBUG
         else {
@@ -100,9 +99,10 @@ private:
             }
         }
         
-        //keep biggest area white
+        //keep biggest white area
         floodFill( shrunkenCell , maxPoint , CV_RGB( 255 , 255 , 255 ) );
         
+        /*
         //keep all other areas black
         for ( int r=0 ; r<20 ; ++r ) {
             uchar* row = shrunkenCell.ptr( r );
@@ -111,7 +111,7 @@ private:
                     floodFill( shrunkenCell , Point( c , r ) , CV_RGB( 0 , 0 , 0 ) );
                 }
             }
-        }
+        }*/
         
         //then we will try to center the digit
         //first, find the boundaries of the white pixels
@@ -130,6 +130,12 @@ private:
         Rect copyLoc( (28-width)/2 , (28-height)/2 , width , height );
         isolatedDigit.copyTo( paddedDigit(copyLoc) );
         
+        /*
+        _disp.enable();
+        _disp.showImage( "Padded digit" , paddedDigit );
+        _disp.disable();
+        */
+         
         Mat reshapedDigit = Mat( 1 , 28*28 , CV_32F );
         for ( int r=0 ; r<28 ; ++r ) {
             for ( int c=0 ; c<28 ; ++c ) {
