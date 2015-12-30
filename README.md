@@ -13,7 +13,17 @@ and output a solution like this:
 (https://raw.githubusercontent.com/mjchao/Sudoku-Solver/master/solution.jpg)
 
 #Process
-In this project, I first followed the AI Shack tutorial for extracting an undistorted puzzle from an arbitrary image. After this, all the work was done without a tutorial. 
+In this project, I first followed the AI Shack tutorial for extracting an undistorted puzzle from an arbitrary image. For example, I started with the initial picture
+
+![Initial puzzle]
+(https://raw.githubusercontent.com/mjchao/Sudoku-Solver/master/puzzle.jpg)
+
+and extracted the following undistorted puzzle:
+
+![Undistorted puzzle]
+(https://raw.githubusercontent.com/mjchao/Sudoku-Solver/master/undistorted.jpg)
+
+All the work was done without a tutorial. 
 
 ##Neural Network Training
 Next, I attempted to train a neural network for classifying images of digits. The MNIST dataset for handwritten digits didn't seem to work - perhaps the handwritten digits weren't similar enough to the print digits. I then wrote a separate program to generated the training and test data using all the fonts on my computer. This resulted in training sets like the one shown below:
