@@ -29,8 +29,8 @@ using cv::Mat;
 using cv::imshow;
 
 //REMINDER: Puzzle3 is PNG not JPG
-#define SUDOKU_PUZZLE_FILE "/Users/mjchao/Desktop/Sudoku-Solver/puzzle3.png"
-#define SUDOKU_SOLUTION_FILE "/Users/mjchao/Desktop/Sudoku-Solver/solution3.png"
+#define SUDOKU_PUZZLE_FILE "/Users/mjchao/Desktop/Sudoku-Solver/puzzle5.jpg"
+#define SUDOKU_SOLUTION_FILE "/Users/mjchao/Desktop/Sudoku-Solver/solution5.jpg"
 
 //DIGIT dataset refers to MNIST dataset which seems too clean and doesn't
 //generalize well to printed characters
@@ -47,9 +47,16 @@ using cv::imshow;
 #define DIGIT2_TEST_DIRECTORY "/Users/mjchao/Desktop/Sudoku-Solver/PhotoOCRTraining/test"
 #define DIGIT2_NN_DATA_FILE "/Users/mjchao/Desktop/Sudoku-Solver/PhotoOCRTraining/nndata.xml"
 
+void trainNN() {
+    DigitRecognizer digitRecognizer;
+    digitRecognizer.train( DIGIT2_TRAIN_DIRECTORY );
+    digitRecognizer.test( DIGIT2_TEST_DIRECTORY );
+    digitRecognizer.save( DIGIT2_NN_DATA_FILE );
+}
+
 int main(int argc, const char * argv[]) {
     
-    /*
+    
     Mat puzzle;
     puzzle = imread( SUDOKU_PUZZLE_FILE , 0 );
     
@@ -68,26 +75,13 @@ int main(int argc, const char * argv[]) {
     imshow( "Extracted Puzzle" , isolatedPuzzle );
     waitKey( 0 );
     
-    //*/
-    
     DigitRecognizer digitRecognizer;
+    digitRecognizer.load( DIGIT2_NN_DATA_FILE );
     
     
-    digitRecognizer.train( DIGIT2_TRAIN_DIRECTORY );
-    digitRecognizer.test( DIGIT2_TEST_DIRECTORY );
-    digitRecognizer.save( DIGIT2_NN_DATA_FILE );
-    //*/
-    
-    //digitRecognizer.load( DIGIT2_NN_DATA_FILE );
-    //digitRecognizer.test( DIGIT2_TEST_DIRECTORY );
-    //*/
-    
-    return 0;
-    /*
     PuzzleReader reader( isolatedPuzzle , digitRecognizer );
     vector<vector<int>> digits;
-    reader.getDigits( digits , true );
-    //
+    reader.getDigits( digits , false );
     
     vector<vector<int>> solvedPuzzle = digits;
     
@@ -130,7 +124,7 @@ int main(int argc, const char * argv[]) {
     imshow( "Solution" , solution );
     waitKey( 0 );
     imwrite( SUDOKU_SOLUTION_FILE , solution );
-    return 0;*/
+    return 0;
 }
 
 
