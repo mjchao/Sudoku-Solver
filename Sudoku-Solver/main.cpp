@@ -29,8 +29,8 @@ using cv::Mat;
 using cv::imshow;
 
 //REMINDER: Puzzle3 is PNG not JPG
-#define SUDOKU_PUZZLE_FILE "/Users/mjchao/Desktop/Sudoku-Solver/puzzle4.jpg"
-#define SUDOKU_SOLUTION_FILE "/Users/mjchao/Desktop/Sudoku-Solver/solution4.jpg"
+#define SUDOKU_PUZZLE_FILE "/Users/mjchao/Desktop/Sudoku-Solver/puzzle3.png"
+#define SUDOKU_SOLUTION_FILE "/Users/mjchao/Desktop/Sudoku-Solver/solution3.png"
 
 //DIGIT dataset refers to MNIST dataset which seems too clean and doesn't
 //generalize well to printed characters
@@ -83,7 +83,7 @@ int main(int argc, const char * argv[]) {
     
     PuzzleReader reader( isolatedPuzzle , digitRecognizer );
     vector<vector<int>> digits;
-    reader.getDigits( digits , false );
+    reader.getDigits( digits , true );
     //*/
     
     vector<vector<int>> solvedPuzzle = digits;
