@@ -79,7 +79,7 @@ private:
         
         //if there aren't enough white pixels, assume it is an empty square
         int whitePixels = countWhitePixelsInCenter( shrunkenCell );
-        if ( whitePixels < 6 ) {
+        if ( whitePixels < 8 ) {
             return -1;
         }
         /*

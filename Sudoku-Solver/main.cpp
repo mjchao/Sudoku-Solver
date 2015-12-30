@@ -29,8 +29,8 @@ using cv::Mat;
 using cv::imshow;
 
 //REMINDER: Puzzle3 is PNG not JPG
-#define SUDOKU_PUZZLE_FILE "/Users/mjchao/Desktop/Sudoku-Solver/puzzle5.jpg"
-#define SUDOKU_SOLUTION_FILE "/Users/mjchao/Desktop/Sudoku-Solver/solution5.jpg"
+#define SUDOKU_PUZZLE_FILE "/Users/mjchao/Desktop/Sudoku-Solver/puzzle4.jpg"
+#define SUDOKU_SOLUTION_FILE "/Users/mjchao/Desktop/Sudoku-Solver/solution4.jpg"
 
 //DIGIT dataset refers to MNIST dataset which seems too clean and doesn't
 //generalize well to printed characters
