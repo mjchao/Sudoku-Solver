@@ -30,8 +30,7 @@ All the work after this was done without a tutorial.
 ##Neural Network Training
 Next, I attempted to train a neural network for classifying images of digits. The MNIST dataset for handwritten digits didn't seem to work - perhaps the handwritten digits weren't similar enough to the print digits. I then wrote a separate program to generated the training and test data using all the fonts on my computer. This resulted in training sets like the one shown below:
 
-![Sample Digit Recognition Training Set]
-(https://raw.githubusercontent.com/mjchao/Sudoku-Solver/master/PhotoOCRTraining/train/1-tiles.png)
+<img src="https://raw.githubusercontent.com/mjchao/Sudoku-Solver/master/PhotoOCRTraining/train/1-tiles.png" height="1000">
 
 There was approximately 79% accuracy on the test set. Perhaps it would be a good idea to generate a larger training set and train a deeper neural network on a machine with more computational power. It may also be a good idea to consider other learning algorithms.
 
