@@ -126,11 +126,11 @@ private:
         Rect copyLoc( (28-width)/2 , (28-height)/2 , width , height );
         isolatedDigit.copyTo( paddedDigit(copyLoc) );
         
-        
+        /*
         _disp.enable();
         _disp.showImage( "Padded digit" , paddedDigit );
         _disp.disable();
-        
+        */
          
         Mat reshapedDigit = Mat( 1 , 28*28 , CV_32F );
         for ( int r=0 ; r<28 ; ++r ) {
