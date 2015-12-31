@@ -52,7 +52,7 @@ Here is an example of a puzzle that failed:
 ![Failed solution]
 (https://github.com/mjchao/Sudoku-Solver/raw/master/solution5.jpg)
 
-The program misread the 3 as a 1 in row 5, column 3 and believed the puzzle was
+The program misread several numbers and believed the puzzle was
 
 <pre>
 4 3 7 ? 8 8 ? ? ? 
@@ -65,4 +65,4 @@ The program misread the 3 as a 1 in row 5, column 3 and believed the puzzle was
 7 ? 5 ? ? 6 ? ? ? 
 ? ? ? 9 8 ? 1 5 6 
 </pre>
-Consequently, it could not find a valid solution to the puzzle. 
+Consequently, it could not find a valid solution. This is probably due to bad training data. I will be trying to find better ways to generate good training data.
