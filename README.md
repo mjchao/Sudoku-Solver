@@ -65,4 +65,11 @@ The program misread several numbers and believed the puzzle was
 7 ? 5 ? ? 6 ? ? ? 
 ? ? ? 9 8 ? 1 5 6 
 </pre>
-Consequently, it could not find a valid solution. This is probably due to bad training data. I will be trying to find better ways to generate good training data.
+Consequently, it could not find a valid solution.
+
+##Potential Improvements
+About 6 months after I posted the above results, I revisited the problem of classifying handwritten digits with neural networks. I compared how well artificial neural networks (ANN) and convolution neural networks (CNN) performed. 
+
+The above results were generated using ANNs and ANNs turned out to not generalize well for handwritten digit classification. ANNs only look at the pixels indepedent of other pixels and any small-ish training dataset (MNIST and my custom-generated one) will be unable to cover all the different locations at which the digit might appear. With ANNs, simply moving a digit left, right, up, or down by a few pixels can completely throw off the classifier. Since it is very difficult for to have the digits perfectly centered in the square, ANNs were a poor choice for this problem.
+
+CNNs will probably improve the results because they take into account the relative positions of pixels to other nearby pixels. This will generalize better for cases where the digit is not perfectly centered, but close to being centered. In fact, I implemented an ANN and CNN classifier [here](https://github.com/mjchao/Machine-Learning-Experiments/blob/master/workspace/MNIST/Model.py) for classifying a user-drawn digit and the CNN is far superior to the ANN. My guess is that if we applied a CNN to this problem, the results would be much better.
